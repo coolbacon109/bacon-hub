@@ -240,7 +240,7 @@
 </head>
 <body>
 
-  <!-- ambient audio loaded quietly -->
+  <!-- audio files (play commands handled in script) -->
   <audio id="main-audio" src="audio-slowed.mp3" loop preload="auto"></audio>
   <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
 
@@ -322,13 +322,13 @@
         <div class="changelog-box">
           <div class="changelog-header">
             <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
-            <span class="version-badge">v1.3</span>
+            <span class="version-badge">v1.3 patch</span>
           </div>
           <ul class="changelog-list">
             <li><strong>lazylist:</strong> integrated the newest html payload for direct launching.</li>
             <li><strong>stealth:</strong> custom liquid dropdown added for auto-redirect configuration.</li>
-            <li><strong>ui upgrade:</strong> entirely rebuilt with a minimal liquid glass styling.</li>
-            <li><strong>patch:</strong> resolved about:blank popup blocker bugs.</li>
+            <li><strong>audio:</strong> added a slowed song when you enter.</li>
+            <li><strong>patch:</strong> fixed song overlapping.</li>
           </ul>
         </div>
       </div>
@@ -352,17 +352,8 @@
   <script>
     const ALLOWED_PASSCODES = ["coolbacon", "luisisthebest", "nosery", "kingsley", "masonmason"];
 
-    // ambient audio config
     const mainAudio = document.getElementById("main-audio");
     mainAudio.volume = 0.15;
-
-    const initAudio = () => {
-      mainAudio.play().catch(e => console.log("waiting for user interaction to play audio."));
-      document.removeEventListener('click', initAudio);
-      document.removeEventListener('keydown', initAudio);
-    };
-    document.addEventListener('click', initAudio);
-    document.addEventListener('keydown', initAudio);
 
     function createSnow() {
       const container = document.getElementById('snow-container');
@@ -441,6 +432,9 @@
       if (ALLOWED_PASSCODES.includes(entered.toLowerCase().trim())) {
         document.getElementById("master-security-gate").style.display = "none";
         document.getElementById("launch-screen").style.display = "flex";
+        
+        // start background audio only upon successful entry
+        mainAudio.play().catch(e => console.log("audio play blocked."));
       } else {
         triggerRejection();
       }
