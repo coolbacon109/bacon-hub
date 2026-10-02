@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title id="page-title">Resources</title>
+  <title id="page-title">resources</title>
   <link id="page-favicon" rel="icon" type="image/png" href="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128">
 
   <!-- Clean Modern Apple-style Fonts -->
@@ -23,7 +23,7 @@
       color: #18181b; 
     }
 
-    /* Ambient background blobs to create the liquid glass distortion effect */
+    /* Ambient background blobs */
     .ambient-blob {
       position: absolute;
       filter: blur(80px);
@@ -93,7 +93,7 @@
 
     /* TAB CLOAK SELECTOR */
     .cloak-selector-container { margin-bottom: 30px; }
-    .cloak-label { font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; }
+    .cloak-label { font-size: 11px; color: #64748b; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
     .cloak-btn { 
       display: flex; align-items: center; gap: 6px; 
@@ -131,32 +131,70 @@
     }
     .gate-btn:hover { background: #334155; transform: scale(1.02); box-shadow: 0 15px 25px rgba(15, 23, 42, 0.2); }
 
-    /* REDIRECT DROPDOWN */
-    .redirect-wrapper {
+    /* CUSTOM DROPDOWN UI */
+    .dropdown-container {
+      position: relative;
       margin-bottom: 24px;
-      background: rgba(255,255,255,0.5);
-      border: 1px solid rgba(255,255,255,0.8);
+      width: 100%;
+    }
+    .custom-dropdown-btn {
+      width: 100%;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.9);
       border-radius: 14px;
-      padding: 4px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
-    }
-    .redirect-wrapper i {
-      color: #64748b;
-      margin-left: 12px;
-      font-size: 14px;
-    }
-    .redirect-select {
-      width: 100%;
-      padding: 12px;
-      background: transparent;
-      border: none;
+      justify-content: space-between;
       color: #0f172a;
       font-size: 14px;
       font-weight: 600;
-      outline: none;
       cursor: pointer;
-      appearance: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .custom-dropdown-btn:hover {
+      background: #ffffff;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .dropdown-icon-left { color: #64748b; margin-right: 12px; }
+    .dropdown-arrow { transition: transform 0.3s ease; color: #64748b; }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 14px;
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+    .dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .dropdown-item {
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+    .dropdown-item:hover {
+      background: #f1f5f9;
+      color: #0f172a;
     }
 
     /* LIBRARY LIST */
@@ -227,22 +265,22 @@
   <div id="master-security-gate" class="screen-wrapper">
     <div class="gate-card animate-pop" id="gate-prompt">
       <div class="cloak-selector-container">
-        <div class="cloak-label">Browser Mask</div>
+        <div class="cloak-label">browser mask</div>
         <div class="cloak-btn-group">
           <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')">
-            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="Clever" /> Clever
+            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> clever
           </button>
           <button type="button" class="cloak-btn" id="btn-canvas" onclick="setDisguise('canvas')">
-            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="Canvas" /> Canvas
+            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> canvas
           </button>
         </div>
       </div>
 
-      <h1 class="gate-title">Authentication Required</h1>
-      <p class="gate-sub">Enter your secure passcode to continue.</p>
+      <h1 class="gate-title">authentication required</h1>
+      <p class="gate-sub">enter your secure passcode to continue.</p>
       
       <input type="password" id="passInput" class="gate-input" placeholder="••••••••" autofocus autocomplete="off" />
-      <button type="button" class="gate-btn" onclick="verifyAccess()">Unlock Portal <i class="fa-solid fa-arrow-right"></i></button>
+      <button type="button" class="gate-btn" onclick="verifyAccess()">unlock portal <i class="fa-solid fa-arrow-right"></i></button>
 
       <div class="love-text">made with love by coolbacon &lt;3</div>
     </div>
@@ -251,35 +289,41 @@
   <!-- ================= LAUNCH SCREEN ================= -->
   <div id="launch-screen" class="screen-wrapper">
     <div class="gate-card animate-pop">
-      <h1 class="gate-title">Access Granted</h1>
-      <p class="gate-sub">Select a library to initiate.</p>
+      <h1 class="gate-title">access granted</h1>
+      <p class="gate-sub">select a library to initiate.</p>
       
-      <!-- REDIRECT TOGGLE -->
-      <div class="redirect-wrapper">
-        <i class="fa-solid fa-shield-halved"></i>
-        <select id="redirect-choice" class="redirect-select">
-          <option value="none">Auto-Redirect: OFF</option>
-          <option value="google" selected>Auto-Redirect: Google</option>
-          <option value="clever">Auto-Redirect: Clever</option>
-        </select>
+      <!-- CUSTOM REDIRECT DROPDOWN -->
+      <div class="dropdown-container">
+        <button class="custom-dropdown-btn" onclick="toggleDropdown(event)">
+          <span style="display:flex; align-items:center;">
+            <i class="fa-solid fa-shield-halved dropdown-icon-left"></i>
+            <span id="redirect-label">auto-redirect: google</span>
+          </span>
+          <i class="fa-solid fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdown-menu">
+          <div class="dropdown-item" onclick="setRedirect('none', 'auto-redirect: off')">auto-redirect: off</div>
+          <div class="dropdown-item" onclick="setRedirect('google', 'auto-redirect: google')">auto-redirect: google</div>
+          <div class="dropdown-item" onclick="setRedirect('clever', 'auto-redirect: clever')">auto-redirect: clever</div>
+        </div>
       </div>
 
       <div class="library-list">
         <!-- LazyList Row -->
         <div class="library-row">
-          <div class="library-name"><i class="fa-solid fa-gamepad"></i> LazyList</div>
+          <div class="library-name"><i class="fa-solid fa-gamepad"></i> lazylist</div>
           <div class="library-actions">
-            <button class="btn-launch" onclick="launchLocalFile('lazylist.html')">Launch</button>
-            <button class="btn-dl" title="Download HTML" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
+            <button class="btn-launch" onclick="launchLocalFile('lazylist.html')">launch</button>
+            <button class="btn-dl" title="download html" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
           </div>
         </div>
 
         <!-- Arctic Row -->
         <div class="library-row">
-          <div class="library-name"><i class="fa-solid fa-snowflake"></i> Arctic</div>
+          <div class="library-name"><i class="fa-solid fa-snowflake"></i> arctic</div>
           <div class="library-actions">
-            <button class="btn-launch" onclick="launchLocalFile('arctic.html')">Launch</button>
-            <button class="btn-dl" title="Download HTML" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
+            <button class="btn-launch" onclick="launchLocalFile('arctic.html')">launch</button>
+            <button class="btn-dl" title="download html" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
           </div>
         </div>
       </div>
@@ -342,13 +386,13 @@
       document.querySelectorAll('.cloak-btn').forEach(btn => btn.classList.remove('active'));
 
       if (type === 'clever') {
-        document.title = "Resources";
-        titleElem.textContent = "Resources";
+        document.title = "resources";
+        titleElem.textContent = "resources";
         newFavicon.href = "https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128";
         document.getElementById("btn-clever").classList.add("active");
       } else if (type === 'canvas') {
-        document.title = "Dashboard";
-        titleElem.textContent = "Dashboard";
+        document.title = "dashboard";
+        titleElem.textContent = "dashboard";
         newFavicon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
         document.getElementById("btn-canvas").classList.add("active");
       }
@@ -362,7 +406,7 @@
       
       const audio = document.getElementById("rejection-audio");
       audio.volume = 0.2; 
-      audio.play().catch(e => console.log("Audio play blocked."));
+      audio.play().catch(e => console.log("audio play blocked."));
 
       let timeLeft = 15;
       const timerEl = document.getElementById("timer");
@@ -393,25 +437,51 @@
       if (e.key === "Enter") verifyAccess();
     });
 
-    // 6. DYNAMIC REDIRECT HANDLER
+    // 6. CUSTOM DROPDOWN LOGIC
+    let activeRedirect = 'google'; // Default state
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('dropdown-menu');
+      const arrow = document.getElementById('dropdown-arrow');
+      menu.classList.toggle('show');
+      arrow.style.transform = menu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    function setRedirect(value, labelText) {
+      activeRedirect = value;
+      document.getElementById('redirect-label').textContent = labelText;
+      document.getElementById('dropdown-menu').classList.remove('show');
+      document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
+    }
+
+    // Close dropdown when clicking anywhere else
+    window.addEventListener('click', function() {
+      const menu = document.getElementById('dropdown-menu');
+      if(menu.classList.contains('show')) {
+        menu.classList.remove('show');
+        document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // 7. DYNAMIC REDIRECT HANDLER
     function processRedirect() {
-      const choice = document.getElementById('redirect-choice').value;
-      if (choice === 'google') {
+      if (activeRedirect === 'google') {
         window.location.replace("https://www.google.com");
-      } else if (choice === 'clever') {
+      } else if (activeRedirect === 'clever') {
         window.location.replace("https://clever.com");
       }
+      // If "none", it leaves the menu open
     }
 
     // =========================================================================
     // ================= NEW WINDOW LAUNCHERS & DOWNLOADERS ====================
     // =========================================================================
 
-    // A. Generic File Downloader 
     function downloadLocalFile(filename) {
       fetch(filename)
         .then(response => {
-          if (!response.ok) throw new Error("Could not find file.");
+          if (!response.ok) throw new Error("could not find file.");
           return response.blob();
         })
         .then(blob => {
@@ -426,59 +496,39 @@
           
           setTimeout(processRedirect, 1500);
         })
-        .catch(err => alert("Error downloading: Ensure " + filename + " is uploaded to Netlify."));
+        .catch(err => alert("error downloading: ensure " + filename + " is uploaded to github."));
     }
 
-    // B. Advanced Iframe-in-about:blank Cloaker
     function launchLocalFile(filename) {
-      // 1. Open the popup window with defined dimensions
-      let popup = window.open("about:blank", "_blank", "width=1280,height=720");
+      let popup = window.open("about:blank", "_blank");
       
       if (!popup || popup.closed || typeof popup.closed == 'undefined') {
-        alert("Pop-up blocker prevented launch! Please click the icon in your address bar to allow pop-ups for this site, or use the Download option.");
+        alert("pop-up blocker prevented launch! please click the icon in your address bar to allow pop-ups for this site, or use the download option.");
         return;
       }
 
-      // 2. Disguise the popup window instantly
-      popup.document.title = "Classes";
+      popup.document.write("<body style='background:#0f172a;color:#f8fafc;display:flex;align-items:center;justify-content:center;font-family:sans-serif;'><h2>loading " + filename + " safely...</h2></body>");
+      
+      popup.document.title = "classes";
       let icon = popup.document.createElement("link");
       icon.rel = "icon"; icon.type = "image/png";
       icon.href = "https://ssl.gstatic.com/classroom/favicon.png";
       popup.document.head.appendChild(icon);
 
-      // 3. Format the popup body to hide scrollbars and prepare for injection
-      popup.document.body.style.margin = "0";
-      popup.document.body.style.padding = "0";
-      popup.document.body.style.overflow = "hidden";
-      popup.document.body.style.backgroundColor = "#000";
-
-      // 4. Create an iframe inside the popup. 
-      // This prevents the massive HTML file from destroying the about:blank state.
-      let iframe = popup.document.createElement("iframe");
-      iframe.style.width = "100vw";
-      iframe.style.height = "100vh";
-      iframe.style.border = "none";
-      iframe.style.margin = "0";
-      popup.document.body.appendChild(iframe);
-
-      // 5. Fetch the massive game file (lazylist.html or arctic.html)
       fetch(filename)
         .then(response => {
-          if (!response.ok) throw new Error("Could not find " + filename);
+          if (!response.ok) throw new Error("could not find " + filename + " on the server.");
           return response.text();
         })
         .then(htmlContent => {
-          // 6. Inject the massive code exclusively into the IFRAME, keeping the parent window purely about:blank
-          let frameDoc = iframe.contentWindow.document;
-          frameDoc.open();
-          frameDoc.write(htmlContent);
-          frameDoc.close();
+          popup.document.open();
+          popup.document.write(htmlContent);
+          popup.document.close();
 
-          // 7. Redirect the original tab
           processRedirect();
         })
         .catch(err => {
-          popup.document.body.innerHTML = "<h3 style='color:#ef4444;text-align:center;font-family:sans-serif;margin-top:20vh;'>Error: " + err.message + " - Make sure you uploaded the file to Netlify.</h3>";
+          popup.document.body.innerHTML = "<h3 style='color:#ef4444;text-align:center;font-family:sans-serif;margin-top:20vh;'>error: " + err.message + " - make sure you uploaded the file to github.</h3>";
         });
     }
   </script>
