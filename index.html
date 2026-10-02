@@ -7,14 +7,12 @@
   <title id="page-title">resources</title>
   <link id="page-favicon" rel="icon" type="image/png" href="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128">
 
-  <!-- Clean Modern Apple-style Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
   <style>
-    /* ================= BASE STYLES & LIQUID GLASS AESTHETIC ================= */
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     
     body { 
@@ -23,7 +21,6 @@
       color: #18181b; 
     }
 
-    /* Ambient background blobs */
     .ambient-blob {
       position: absolute;
       filter: blur(80px);
@@ -40,7 +37,6 @@
       100% { transform: translate(5%, 10%) scale(1.1); }
     }
 
-    /* ================= SMOOTH ANIMATIONS ================= */
     @keyframes smoothPopIn {
       0% { opacity: 0; transform: translateY(20px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -50,7 +46,6 @@
       animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* GLOBAL SNOW EFFECTS */
     #snow-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 1; overflow: hidden;
@@ -66,7 +61,6 @@
     }
     @keyframes fall { to { transform: translateY(105vh); } }
 
-    /* ================= SCREEN CONTAINERS ================= */
     .screen-wrapper {
       position: fixed; inset: 0; z-index: 10;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -74,7 +68,6 @@
     }
     #launch-screen, #rejection-screen { display: none; }
 
-    /* ================= LIQUID GLASS CARD ================= */
     .gate-card {
       width: 100%; max-width: 420px;
       padding: 40px 32px;
@@ -91,9 +84,19 @@
       opacity: 0; 
     }
 
-    /* TAB CLOAK SELECTOR */
+    .gate-card-wide {
+      max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px;
+    }
+    .launch-section { flex: 1; }
+    .changelog-section { width: 280px; flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      .gate-card-wide { flex-direction: column; gap: 24px; padding: 24px; }
+      .changelog-section { width: 100%; }
+    }
+
     .cloak-selector-container { margin-bottom: 30px; }
-    .cloak-label { font-size: 11px; color: #64748b; letter-spacing: 1px; margin-bottom: 12px; font-weight: 700; }
+    .cloak-label { font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
     .cloak-btn { 
       display: flex; align-items: center; gap: 6px; 
@@ -107,7 +110,6 @@
     .cloak-btn:hover { background: rgba(255, 255, 255, 0.9); color: #0f172a; transform: scale(1.02); }
     .cloak-btn.active { background: #ffffff; color: #3b82f6; border-color: #3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); }
 
-    /* TEXT & INPUTS */
     .gate-title { font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
     .gate-sub { font-size: 14px; color: #64748b; margin-bottom: 28px; }
     
@@ -120,7 +122,7 @@
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
     .gate-input:focus { border-color: #3b82f6; background: #ffffff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
-    .gate-input::placeholder { color: #94a3b8; }
+    .gate-input::placeholder { color: #94a3b8; letter-spacing: 2px; }
     
     .gate-btn { 
       width: 100%; padding: 16px; background: #0f172a; color: #ffffff; 
@@ -131,73 +133,32 @@
     }
     .gate-btn:hover { background: #334155; transform: scale(1.02); box-shadow: 0 15px 25px rgba(15, 23, 42, 0.2); }
 
-    /* CUSTOM DROPDOWN UI */
-    .dropdown-container {
-      position: relative;
-      margin-bottom: 24px;
-      width: 100%;
-    }
+    .dropdown-container { position: relative; margin-bottom: 24px; width: 100%; }
     .custom-dropdown-btn {
-      width: 100%;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 14px;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #0f172a;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      width: 100%; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+      color: #0f172a; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
-    .custom-dropdown-btn:hover {
-      background: #ffffff;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-    }
+    .custom-dropdown-btn:hover { background: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
     .dropdown-icon-left { color: #64748b; margin-right: 12px; }
     .dropdown-arrow { transition: transform 0.3s ease; color: #64748b; }
     
     .dropdown-menu {
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0; right: 0;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 14px;
-      padding: 6px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.9); border-radius: 14px; padding: 6px;
+      opacity: 0; visibility: hidden; transform: translateY(-10px);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      z-index: 100;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1); z-index: 100;
     }
-    .dropdown-menu.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+    .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-item {
-      padding: 12px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      color: #475569;
-      text-align: left;
-      transition: all 0.2s ease;
+      padding: 12px 16px; border-radius: 10px; cursor: pointer;
+      font-size: 14px; font-weight: 600; color: #475569; text-align: left; transition: all 0.2s ease;
     }
-    .dropdown-item:hover {
-      background: #f1f5f9;
-      color: #0f172a;
-    }
+    .dropdown-item:hover { background: #f1f5f9; color: #0f172a; }
 
-    /* LIBRARY LIST */
     .library-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
     .library-row {
       display: flex; align-items: center; justify-content: space-between;
@@ -225,43 +186,71 @@
     }
     .btn-dl:hover { background: rgba(0,0,0,0.1); transform: scale(1.04); }
 
-    .love-text { font-size: 12px; color: #94a3b8; font-weight: 500; }
+    .changelog-box {
+      background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(255,255,255,0.3);
+    }
+    .changelog-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.6);
+    }
+    .changelog-title { font-size: 15px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px; }
+    .changelog-title i { color: #3b82f6; }
+    .version-badge {
+      background: #0f172a; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .changelog-list li {
+      font-size: 13px; color: #475569; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500;
+    }
+    .changelog-list li::before {
+      content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #3b82f6; border-radius: 50%;
+    }
+    .changelog-list li strong { color: #0f172a; font-weight: 700; }
+
+    .love-text { font-size: 12px; color: #94a3b8; font-weight: 500; margin-top: auto; }
+    .love-text-left { text-align: left; margin-top: 8px; }
 
     /* ================= REJECTION SCREEN ================= */
     #rejection-screen { perspective: 1000px; }
     #rejection-content {
       transition: transform 0.1s linear; 
-      transform-style: preserve-3d; z-index: 10; padding: 0 20px;
+      transform-style: preserve-3d; z-index: 10;
+    }
+
+    .rejection-card {
+      width: 100%; max-width: 500px; margin: 0 auto;
+      padding: 40px 32px; background: rgba(255, 255, 255, 0.4); 
+      border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 28px;
+      backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255,255,255,0.4); 
+      text-align: center;
     }
 
     .rejection-text {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 32px; font-weight: 800; line-height: 1.3; max-width: 700px; margin: 0 auto;
-      color: #0c4a6e; 
-      -webkit-text-stroke: 1.5px #38bdf8;
-      text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
-      transform: translateZ(20px); letter-spacing: -0.5px;
+      font-size: 24px; font-weight: 700; line-height: 1.4;
+      color: #0f172a; margin-bottom: 24px;
     }
 
     .countdown {
-      color: #ef4444; -webkit-text-stroke: 0; 
-      text-shadow: 0 0 20px rgba(239, 68, 68, 0.4); font-weight: 800; font-size: 36px;
+      color: #ef4444; font-weight: 800; font-size: 28px;
     }
-
-    .exit-text { margin-top: 40px; font-size: 14px; color: #64748b; font-weight: 500; transform: translateZ(10px); }
   </style>
 </head>
 <body>
 
-  <!-- AMBIENT LIQUID GLASS BLOBS -->
+  <!-- ambient audio loaded quietly -->
+  <audio id="main-audio" src="audio.mp3" loop preload="auto"></audio>
+  <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
+
   <div class="ambient-blob blob-1"></div>
   <div class="ambient-blob blob-2"></div>
   <div class="ambient-blob blob-3"></div>
 
-  <!-- GLOBAL SNOW -->
   <div id="snow-container"></div>
 
-  <!-- ================= SECURITY GATE HTML ================= -->
+  <!-- ================= SECURITY GATE ================= -->
   <div id="master-security-gate" class="screen-wrapper">
     <div class="gate-card animate-pop" id="gate-prompt">
       <div class="cloak-selector-container">
@@ -288,66 +277,94 @@
 
   <!-- ================= LAUNCH SCREEN ================= -->
   <div id="launch-screen" class="screen-wrapper">
-    <div class="gate-card animate-pop">
-      <h1 class="gate-title">access granted</h1>
-      <p class="gate-sub">select a library to initiate.</p>
+    <div class="gate-card gate-card-wide animate-pop">
       
-      <!-- CUSTOM REDIRECT DROPDOWN -->
-      <div class="dropdown-container">
-        <button class="custom-dropdown-btn" onclick="toggleDropdown(event)">
-          <span style="display:flex; align-items:center;">
-            <i class="fa-solid fa-shield-halved dropdown-icon-left"></i>
-            <span id="redirect-label">auto-redirect: google</span>
-          </span>
-          <i class="fa-solid fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
-        </button>
-        <div class="dropdown-menu" id="dropdown-menu">
-          <div class="dropdown-item" onclick="setRedirect('none', 'auto-redirect: off')">auto-redirect: off</div>
-          <div class="dropdown-item" onclick="setRedirect('google', 'auto-redirect: google')">auto-redirect: google</div>
-          <div class="dropdown-item" onclick="setRedirect('clever', 'auto-redirect: clever')">auto-redirect: clever</div>
-        </div>
-      </div>
-
-      <div class="library-list">
-        <!-- LazyList Row -->
-        <div class="library-row">
-          <div class="library-name"><i class="fa-solid fa-gamepad"></i> lazylist</div>
-          <div class="library-actions">
-            <button class="btn-launch" onclick="launchLocalFile('lazylist.html')">launch</button>
-            <button class="btn-dl" title="download html" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
+      <div class="launch-section">
+        <h1 class="gate-title">access granted</h1>
+        <p class="gate-sub">select a library to initiate.</p>
+        
+        <div class="dropdown-container">
+          <button class="custom-dropdown-btn" onclick="toggleDropdown(event)">
+            <span style="display:flex; align-items:center;">
+              <i class="fa-solid fa-shield-halved dropdown-icon-left"></i>
+              <span id="redirect-label">auto-redirect: google</span>
+            </span>
+            <i class="fa-solid fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <div class="dropdown-item" onclick="setRedirect('none', 'auto-redirect: off')">auto-redirect: off</div>
+            <div class="dropdown-item" onclick="setRedirect('google', 'auto-redirect: google')">auto-redirect: google</div>
+            <div class="dropdown-item" onclick="setRedirect('clever', 'auto-redirect: clever')">auto-redirect: clever</div>
           </div>
         </div>
 
-        <!-- Arctic Row -->
-        <div class="library-row">
-          <div class="library-name"><i class="fa-solid fa-snowflake"></i> arctic</div>
-          <div class="library-actions">
-            <button class="btn-launch" onclick="launchLocalFile('arctic.html')">launch</button>
-            <button class="btn-dl" title="download html" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
+        <div class="library-list">
+          <div class="library-row">
+            <div class="library-name"><i class="fa-solid fa-gamepad"></i> lazylist</div>
+            <div class="library-actions">
+              <button class="btn-launch" onclick="launchLocalFile('lazylist.html')">launch</button>
+              <button class="btn-dl" title="download html" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
+            </div>
           </div>
+
+          <div class="library-row">
+            <div class="library-name"><i class="fa-solid fa-snowflake"></i> arctic</div>
+            <div class="library-actions">
+              <button class="btn-launch" onclick="launchLocalFile('arctic.html')">launch</button>
+              <button class="btn-dl" title="download html" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="love-text love-text-left">made with love by coolbacon &lt;3</div>
+      </div>
+
+      <div class="changelog-section">
+        <div class="changelog-box">
+          <div class="changelog-header">
+            <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
+            <span class="version-badge">v1.3</span>
+          </div>
+          <ul class="changelog-list">
+            <li><strong>lazylist:</strong> integrated the newest html payload for direct launching.</li>
+            <li><strong>stealth:</strong> custom liquid dropdown added for auto-redirect configuration.</li>
+            <li><strong>ui upgrade:</strong> entirely rebuilt with a minimal liquid glass styling.</li>
+            <li><strong>patch:</strong> resolved about:blank popup blocker bugs.</li>
+          </ul>
         </div>
       </div>
 
-      <div class="love-text">made with love by coolbacon &lt;3</div>
     </div>
   </div>
 
   <!-- ================= REJECTION SCREEN ================= -->
   <div id="rejection-screen" class="screen-wrapper">
     <div id="rejection-content" class="animate-pop">
-      <div class="rejection-text">
-        seems like you got the password wrong. were you being curious and tried getting into the website? well sorry this website is private and your not getting access. you will be kicked out in <span id="timer" class="countdown">15</span> seconds!
+      <div class="rejection-card">
+        <div class="rejection-text">
+          seems like you got the password wrong. were you being curious and tried getting into the website? well sorry this website is private and your not getting access. you will be kicked out in <span id="timer" class="countdown">15</span> seconds!
+        </div>
+        <div class="exit-text">made with love by coolbacon &lt;3</div>
       </div>
-      <div class="exit-text">made with love by coolbacon &lt;3</div>
     </div>
-    <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
   </div>
 
   <!-- ================= SCRIPTS ================= -->
   <script>
     const ALLOWED_PASSCODES = ["coolbacon", "luisisthebest", "nosery", "kingsley", "masonmason"];
 
-    // 1. Smooth Snow Generator
+    // ambient audio config
+    const mainAudio = document.getElementById("main-audio");
+    mainAudio.volume = 0.15;
+    mainAudio.playbackRate = 0.8;
+
+    const initAudio = () => {
+      mainAudio.play().catch(e => console.log("waiting for user interaction to play audio."));
+      document.removeEventListener('click', initAudio);
+      document.removeEventListener('keydown', initAudio);
+    };
+    document.addEventListener('click', initAudio);
+    document.addEventListener('keydown', initAudio);
+
     function createSnow() {
       const container = document.getElementById('snow-container');
       setInterval(() => {
@@ -364,20 +381,17 @@
     }
     createSnow();
 
-    // 2. ULTRA-SUBTLE 3D Mouse Movement for Rejection Screen
     document.addEventListener('mousemove', (e) => {
       if (document.getElementById("rejection-screen").style.display === "flex") {
         const xAxis = (e.pageX - window.innerWidth / 2) / 100;
         const yAxis = -(e.pageY - window.innerHeight / 2) / 100; 
-        
-        const rejectionText = document.getElementById('rejection-content');
-        if (rejectionText) {
-          rejectionText.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        const rejectionCard = document.getElementById('rejection-content');
+        if (rejectionCard) {
+          rejectionCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         }
       }
     });
 
-    // 3. Tab Cloaking Function
     function setDisguise(type) {
       const titleElem = document.getElementById("page-title");
       let favicon = document.getElementById("page-favicon");
@@ -399,14 +413,15 @@
       favicon.parentNode.replaceChild(newFavicon, favicon);
     }
 
-    // 4. Rejection Logic
     function triggerRejection() {
       document.getElementById("master-security-gate").style.display = "none";
       document.getElementById("rejection-screen").style.display = "flex";
       
-      const audio = document.getElementById("rejection-audio");
-      audio.volume = 0.2; 
-      audio.play().catch(e => console.log("audio play blocked."));
+      mainAudio.pause();
+      
+      const rejAudio = document.getElementById("rejection-audio");
+      rejAudio.volume = 0.2; 
+      rejAudio.play().catch(e => console.log("audio play blocked."));
 
       let timeLeft = 15;
       const timerEl = document.getElementById("timer");
@@ -422,7 +437,6 @@
       }, 1000);
     }
 
-    // 5. Passcode Checker
     function verifyAccess() {
       const entered = document.getElementById("passInput").value;
       if (ALLOWED_PASSCODES.includes(entered.toLowerCase().trim())) {
@@ -437,8 +451,7 @@
       if (e.key === "Enter") verifyAccess();
     });
 
-    // 6. CUSTOM DROPDOWN LOGIC
-    let activeRedirect = 'google'; // Default state
+    let activeRedirect = 'google';
 
     function toggleDropdown(event) {
       event.stopPropagation();
@@ -455,7 +468,6 @@
       document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
     }
 
-    // Close dropdown when clicking anywhere else
     window.addEventListener('click', function() {
       const menu = document.getElementById('dropdown-menu');
       if(menu.classList.contains('show')) {
@@ -464,19 +476,13 @@
       }
     });
 
-    // 7. DYNAMIC REDIRECT HANDLER
     function processRedirect() {
       if (activeRedirect === 'google') {
         window.location.replace("https://www.google.com");
       } else if (activeRedirect === 'clever') {
         window.location.replace("https://clever.com");
       }
-      // If "none", it leaves the menu open
     }
-
-    // =========================================================================
-    // ================= NEW WINDOW LAUNCHERS & DOWNLOADERS ====================
-    // =========================================================================
 
     function downloadLocalFile(filename) {
       fetch(filename)
