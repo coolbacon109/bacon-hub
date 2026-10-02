@@ -241,7 +241,7 @@
 <body>
 
   <!-- ambient audio loaded quietly -->
-  <audio id="main-audio" src="audio.mp3" loop preload="auto"></audio>
+  <audio id="main-audio" src="audio-slowed.mp3" loop preload="auto"></audio>
   <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
 
   <div class="ambient-blob blob-1"></div>
@@ -355,7 +355,6 @@
     // ambient audio config
     const mainAudio = document.getElementById("main-audio");
     mainAudio.volume = 0.15;
-    mainAudio.playbackRate = 0.8;
 
     const initAudio = () => {
       mainAudio.play().catch(e => console.log("waiting for user interaction to play audio."));
