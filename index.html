@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title id="page-title">resources</title>
+  <title id="page-title">Resources</title>
   <link id="page-favicon" rel="icon" type="image/png" href="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,22 +15,15 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     
-    body { 
-      background-color: #f8fafc; 
-      overflow: hidden; 
-      color: #18181b; 
-    }
+    body { background-color: #050505; overflow: hidden; color: #f8fafc; }
 
     .ambient-blob {
-      position: absolute;
-      filter: blur(80px);
-      z-index: 0;
-      opacity: 0.7;
+      position: absolute; filter: blur(90px); z-index: 0; opacity: 0.5;
       animation: float 20s infinite ease-in-out alternate;
     }
-    .blob-1 { background: #bae6fd; width: 60vw; height: 60vw; top: -20%; left: -10%; border-radius: 50%; }
-    .blob-2 { background: #e0e7ff; width: 50vw; height: 50vw; bottom: -10%; right: -10%; border-radius: 50%; animation-delay: -5s; }
-    .blob-3 { background: #fdf4ff; width: 40vw; height: 40vw; top: 40%; left: 40%; border-radius: 50%; animation-delay: -10s; }
+    .blob-1 { background: #ea580c; width: 60vw; height: 60vw; top: -20%; left: -10%; border-radius: 50%; } 
+    .blob-2 { background: #7e22ce; width: 50vw; height: 50vw; bottom: -10%; right: -10%; border-radius: 50%; animation-delay: -5s; } 
+    .blob-3 { background: #991b1b; width: 40vw; height: 40vw; top: 40%; left: 40%; border-radius: 50%; animation-delay: -10s; } 
 
     @keyframes float {
       0% { transform: translate(0, 0) scale(1); }
@@ -42,230 +35,197 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .animate-pop {
-      animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    #snow-container {
+    #emoji-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 1; overflow: hidden;
-      opacity: 0; animation: fadeInSnow 2s ease-out 0.5s forwards;
+      pointer-events: none; z-index: 1; overflow: hidden; opacity: 1; 
     }
-    @keyframes fadeInSnow { to { opacity: 1; } }
-    .snowflake {
-      position: absolute; top: -10px; 
-      background: rgba(147, 197, 253, 0.6); 
-      border-radius: 50%; 
-      box-shadow: 0 0 6px rgba(147, 197, 253, 0.4);
-      animation: fall linear forwards;
+    .falling-emoji { position: absolute; top: -30px; animation: fall linear forwards; }
+    @keyframes fall { 
+      0% { transform: translateY(-10px) translateX(0px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) translateX(40px) rotate(180deg); opacity: 0; }
     }
-    @keyframes fall { to { transform: translateY(105vh); } }
 
     .screen-wrapper {
       position: fixed; inset: 0; z-index: 10;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
     }
     #launch-screen, #rejection-screen { display: none; }
 
     .gate-card {
-      width: 100%; max-width: 420px;
-      padding: 40px 32px;
-      background: rgba(255, 255, 255, 0.35); 
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 28px;
-      backdrop-filter: blur(40px) saturate(180%);
-      -webkit-backdrop-filter: blur(40px) saturate(180%);
-      box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.08), 
-        inset 0 0 0 1px rgba(255,255,255,0.4),
-        inset 0 20px 40px rgba(255,255,255,0.4); 
-      text-align: center;
-      opacity: 0; 
+      width: 100%; max-width: 420px; padding: 40px 32px;
+      background: rgba(15, 23, 42, 0.55); border: 1px solid rgba(249, 115, 22, 0.3);
+      border-radius: 28px; backdrop-filter: blur(40px) saturate(150%);
+      -webkit-backdrop-filter: blur(40px) saturate(150%);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 20px 40px rgba(0,0,0,0.5); 
+      text-align: center; opacity: 0; 
     }
 
-    .gate-card-wide {
-      max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px;
-    }
+    .gate-card-wide { max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px; }
     .launch-section { flex: 1; }
     .changelog-section { width: 280px; flex-shrink: 0; }
-
     @media (max-width: 768px) {
       .gate-card-wide { flex-direction: column; gap: 24px; padding: 24px; }
       .changelog-section { width: 100%; }
     }
 
-    .cloak-selector-container { margin-bottom: 30px; }
-    .cloak-label { font-size: 11px; color: #64748b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; }
+    .cloak-selector-container { margin-bottom: 24px; }
+    .cloak-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; text-align: center; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
     .cloak-btn { 
-      display: flex; align-items: center; gap: 6px; 
-      padding: 8px 16px; background: rgba(255, 255, 255, 0.5); 
-      border: 1px solid rgba(255,255,255,0.8); border-radius: 99px; 
-      color: #64748b; font-size: 13px; font-weight: 600; cursor: pointer; 
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      display: flex; align-items: center; gap: 6px; padding: 8px 16px; 
+      background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 99px; color: #94a3b8; font-size: 13px; font-weight: 600; 
+      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
     }
     .cloak-btn img { width: 16px; height: 16px; border-radius: 3px; }
-    .cloak-btn:hover { background: rgba(255, 255, 255, 0.9); color: #0f172a; transform: scale(1.02); }
-    .cloak-btn.active { background: #ffffff; color: #3b82f6; border-color: #3b82f6; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); }
+    .cloak-btn:hover { background: rgba(255, 255, 255, 0.1); color: #f8fafc; transform: scale(1.02); }
+    .cloak-btn.active { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.15); }
 
-    .gate-title { font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
-    .gate-sub { font-size: 14px; color: #64748b; margin-bottom: 28px; }
+    .gate-title { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.5px; }
+    .gate-sub { font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
     
     .gate-input { 
-      width: 100%; padding: 16px 20px; 
-      background: rgba(255, 255, 255, 0.6); 
-      border: 1px solid rgba(255, 255, 255, 0.8); 
-      border-radius: 16px; color: #0f172a; font-size: 16px; text-align: center; 
-      letter-spacing: 4px; outline: none; transition: all 0.3s ease; margin-bottom: 20px; 
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4); 
+      border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 16px; 
+      color: #ea580c; font-size: 16px; text-align: center; letter-spacing: 4px; 
+      outline: none; transition: all 0.3s ease; margin-bottom: 20px; 
     }
-    .gate-input:focus { border-color: #3b82f6; background: #ffffff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
-    .gate-input::placeholder { color: #94a3b8; letter-spacing: 2px; }
+    .gate-input:focus { border-color: #ea580c; background: rgba(0,0,0,0.6); box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15); }
+    .gate-input::placeholder { color: #475569; letter-spacing: 2px; }
     
     .gate-btn { 
-      width: 100%; padding: 16px; background: #0f172a; color: #ffffff; 
+      width: 100%; padding: 16px; background: #ea580c; color: #ffffff; 
       border: none; border-radius: 16px; font-size: 15px; font-weight: 600; 
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-      margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 20px; 
+      display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.2);
     }
-    .gate-btn:hover { background: #334155; transform: scale(1.02); box-shadow: 0 15px 25px rgba(15, 23, 42, 0.2); }
+    .gate-btn:hover { background: #c2410c; transform: scale(1.02); box-shadow: 0 15px 25px rgba(234, 88, 12, 0.3); }
 
     .dropdown-container { position: relative; margin-bottom: 24px; width: 100%; }
     .custom-dropdown-btn {
-      width: 100%; background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9);
+      width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
       border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-      color: #0f172a; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
     }
-    .custom-dropdown-btn:hover { background: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
-    .dropdown-icon-left { color: #64748b; margin-right: 12px; }
+    .custom-dropdown-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+    .dropdown-icon-left { color: #ea580c; margin-right: 12px; }
     .dropdown-arrow { transition: transform 0.3s ease; color: #64748b; }
     
     .dropdown-menu {
       position: absolute; top: calc(100% + 8px); left: 0; right: 0;
-      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.9); border-radius: 14px; padding: 6px;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 6px;
       opacity: 0; visibility: hidden; transform: translateY(-10px);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1); z-index: 100;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 100;
     }
     .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-item {
-      padding: 12px 16px; border-radius: 10px; cursor: pointer;
-      font-size: 14px; font-weight: 600; color: #475569; text-align: left; transition: all 0.2s ease;
-    }
-    .dropdown-item:hover { background: #f1f5f9; color: #0f172a; }
+    .dropdown-item { padding: 12px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: #94a3b8; transition: all 0.2s ease; }
+    .dropdown-item:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
 
     .library-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
     .library-row {
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9);
+      background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05);
       padding: 12px 16px; border-radius: 16px; transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
-    .library-row:hover { background: #ffffff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+    .library-row:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); border-color: rgba(249, 115, 22, 0.3); }
     
-    .library-name { font-weight: 600; font-size: 15px; color: #0f172a; display: flex; align-items: center; gap: 10px; }
-    .library-name i { color: #64748b; }
+    .library-name { font-weight: 600; font-size: 15px; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
+    .library-name i { color: #ea580c; }
     
     .library-actions { display: flex; gap: 8px; }
-    .btn-launch {
-      background: #0f172a; color: #ffffff; border: none; padding: 8px 16px;
-      border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-launch:hover { background: #3b82f6; transform: scale(1.04); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+    .btn-launch { background: #ea580c; color: #ffffff; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .btn-launch:hover { background: #c2410c; transform: scale(1.04); box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
     
-    .btn-dl {
-      background: rgba(0,0,0,0.05); color: #0f172a; border: none; width: 34px; height: 34px;
-      border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .btn-dl:hover { background: rgba(0,0,0,0.1); transform: scale(1.04); }
+    .btn-dl { background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+    .btn-dl:hover { background: rgba(255,255,255,0.2); color: #fff; transform: scale(1.04); }
 
-    .changelog-box {
-      background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(255,255,255,0.3);
-    }
-    .changelog-header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.6);
-    }
-    .changelog-title { font-size: 15px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px; }
-    .changelog-title i { color: #3b82f6; }
-    .version-badge {
-      background: #0f172a; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-    }
-    .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-    .changelog-list li {
-      font-size: 13px; color: #475569; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500;
-    }
-    .changelog-list li::before {
-      content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #3b82f6; border-radius: 50%;
-    }
-    .changelog-list li strong { color: #0f172a; font-weight: 700; }
+    .changelog-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+    .changelog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .changelog-title { font-size: 15px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+    .changelog-title i { color: #ea580c; }
+    .version-badge { background: #ea580c; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    
+    .changelog-content { overflow-y: auto; padding-right: 8px; max-height: 220px; flex: 1; }
+    .changelog-content::-webkit-scrollbar { width: 4px; }
+    .changelog-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+    .changelog-content::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
+    
+    .version-header { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-    .love-text { font-size: 12px; color: #94a3b8; font-weight: 500; margin-top: auto; }
+    .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .changelog-list li { font-size: 12px; color: #94a3b8; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500; }
+    .changelog-list li::before { content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #ea580c; border-radius: 50%; }
+    .changelog-list li strong { color: #f8fafc; font-weight: 700; }
+
+    .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; }
     .love-text-left { text-align: left; margin-top: 8px; }
 
-    /* ================= REJECTION SCREEN ================= */
     #rejection-screen { perspective: 1000px; }
-    #rejection-content {
-      transition: transform 0.1s linear; 
-      transform-style: preserve-3d; z-index: 10;
-    }
+    #rejection-content { transition: transform 0.1s linear; transform-style: preserve-3d; z-index: 10; }
+    .rejection-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(220, 38, 38, 0.5); border-radius: 28px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(220, 38, 38, 0.2); text-align: center; }
+    .rejection-text { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; }
+    .countdown { color: #ef4444; font-weight: 800; font-size: 28px; text-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
 
-    .rejection-card {
-      width: 100%; max-width: 500px; margin: 0 auto;
-      padding: 40px 32px; background: rgba(255, 255, 255, 0.4); 
-      border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 28px;
-      backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255,255,255,0.4); 
-      text-align: center;
+    .audio-widget {
+      position: fixed; bottom: 24px; right: 24px; z-index: 100;
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(249, 115, 22, 0.3);
+      padding: 12px 20px; border-radius: 99px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
     }
+    .audio-widget.visible { opacity: 1; pointer-events: all; }
+    
+    .disk {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: repeating-radial-gradient(#18181b 0%, #09090b 10%, #18181b 20%);
+      border: 2px solid #ea580c; display: flex; justify-content: center; align-items: center;
+      animation: spin 3s linear infinite; animation-play-state: paused;
+    }
+    .disk.playing { animation-play-state: running; }
+    .disk::after { content: ''; width: 10px; height: 10px; background: #ea580c; border-radius: 50%; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    .rejection-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 24px; font-weight: 700; line-height: 1.4;
-      color: #0f172a; margin-bottom: 24px;
-    }
-
-    .countdown {
-      color: #ef4444; font-weight: 800; font-size: 28px;
-    }
+    .btn-play-pause { background: none; border: none; color: #f8fafc; font-size: 16px; cursor: pointer; transition: color 0.2s; }
+    .btn-play-pause:hover { color: #ea580c; }
+    .vol-slider { width: 70px; accent-color: #ea580c; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <!-- audio files (play commands handled in script) -->
-  <audio id="main-audio" src="audio-slowed.mp3" loop preload="auto"></audio>
+  <audio id="main-audio" src="playlist-october.mp3" loop preload="auto"></audio>
   <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
 
   <div class="ambient-blob blob-1"></div>
   <div class="ambient-blob blob-2"></div>
   <div class="ambient-blob blob-3"></div>
+  <div id="emoji-container"></div>
 
-  <div id="snow-container"></div>
+  <div id="audio-widget" class="audio-widget">
+    <div id="disk-icon" class="disk"></div>
+    <button class="btn-play-pause" id="btn-play-pause" onclick="toggleAudio()"><i class="fa-solid fa-pause"></i></button>
+    <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.15" oninput="changeVolume(this.value)">
+  </div>
 
-  <!-- ================= SECURITY GATE ================= -->
   <div id="master-security-gate" class="screen-wrapper">
     <div class="gate-card animate-pop" id="gate-prompt">
       <div class="cloak-selector-container">
         <div class="cloak-label">browser mask</div>
         <div class="cloak-btn-group">
           <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')">
-            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> clever
+            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> Clever
           </button>
           <button type="button" class="cloak-btn" id="btn-canvas" onclick="setDisguise('canvas')">
-            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> canvas
+            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> Canvas
           </button>
         </div>
       </div>
 
-      <h1 class="gate-title">authentication required</h1>
+      <h1 class="gate-title">Authentication Required</h1>
       <p class="gate-sub">enter your secure passcode to continue.</p>
       
       <input type="password" id="passInput" class="gate-input" placeholder="••••••••" autofocus autocomplete="off" />
@@ -275,26 +235,25 @@
     </div>
   </div>
 
-  <!-- ================= LAUNCH SCREEN ================= -->
   <div id="launch-screen" class="screen-wrapper">
     <div class="gate-card gate-card-wide animate-pop">
       
       <div class="launch-section">
-        <h1 class="gate-title">access granted</h1>
+        <h1 class="gate-title">Access Granted</h1>
         <p class="gate-sub">select a library to initiate.</p>
         
         <div class="dropdown-container">
           <button class="custom-dropdown-btn" onclick="toggleDropdown(event)">
             <span style="display:flex; align-items:center;">
               <i class="fa-solid fa-shield-halved dropdown-icon-left"></i>
-              <span id="redirect-label">auto-redirect: google</span>
+              <span id="redirect-label">auto-redirect: clever</span>
             </span>
             <i class="fa-solid fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
           </button>
           <div class="dropdown-menu" id="dropdown-menu">
             <div class="dropdown-item" onclick="setRedirect('none', 'auto-redirect: off')">auto-redirect: off</div>
-            <div class="dropdown-item" onclick="setRedirect('google', 'auto-redirect: google')">auto-redirect: google</div>
             <div class="dropdown-item" onclick="setRedirect('clever', 'auto-redirect: clever')">auto-redirect: clever</div>
+            <div class="dropdown-item" onclick="setRedirect('canvas', 'auto-redirect: canvas')">auto-redirect: canvas</div>
           </div>
         </div>
 
@@ -322,21 +281,27 @@
         <div class="changelog-box">
           <div class="changelog-header">
             <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
-            <span class="version-badge">v1.3 patch</span>
+            <span class="version-badge">v1.4</span>
           </div>
-          <ul class="changelog-list">
-            <li><strong>lazylist:</strong> integrated the newest html payload for direct launching.</li>
-            <li><strong>stealth:</strong> custom liquid dropdown added for auto-redirect configuration.</li>
-            <li><strong>audio:</strong> added a slowed song when you enter.</li>
-            <li><strong>patch:</strong> fixed song overlapping.</li>
-          </ul>
+          
+          <div class="changelog-content">
+            <div class="version-header">v1.4 halloween</div>
+            <ul class="changelog-list">
+              <li><strong>theme:</strong> activated complete dark-mode halloween aesthetic.</li>
+              <li><strong>audio:</strong> swapped ambient track to playlist-october.mp3 for the season, and added a live spinning vinyl controller to adjust volume.</li>
+              <li><strong>effects:</strong> added falling halloween emojis to the background.</li>
+              <li><strong>ui:</strong> updated frosted glass panels with glowing orange borders.</li>
+              <li><strong>stealth:</strong> completely fixed about:blank cloaking via iframe injection.</li>
+              <li><strong>security:</strong> encrypted all passcodes inside the source code to prevent f12 snooping, disabled right-click, and blocked keyboard shortcuts to the developer console.</li>
+            </ul>
+          </div>
+
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ================= REJECTION SCREEN ================= -->
   <div id="rejection-screen" class="screen-wrapper">
     <div id="rejection-content" class="animate-pop">
       <div class="rejection-card">
@@ -348,37 +313,70 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPTS ================= -->
   <script>
-    const ALLOWED_PASSCODES = ["coolbacon", "luisisthebest", "nosery", "kingsley", "masonmason"];
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', event => {
+      if (event.key === 'F12' || event.keyCode === 123) {
+        event.preventDefault();
+      }
+      if (event.ctrlKey && event.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(event.key)) {
+        event.preventDefault();
+      }
+      if (event.ctrlKey && (event.key === 'U' || event.key === 'u')) {
+        event.preventDefault();
+      }
+    });
+
+    const ENCRYPTED_PASSCODES = [
+      "Y29vbGJhY29u",
+      "bHVpc2lzdGhlYmVzdA==",
+      "bm9zZXJ5",
+      "a2luZ3NsZXk=",
+      "bWFzb25tYXNvbg=="
+    ];
 
     const mainAudio = document.getElementById("main-audio");
     mainAudio.volume = 0.15;
 
-    function createSnow() {
-      const container = document.getElementById('snow-container');
-      setInterval(() => {
-        const flake = document.createElement('div');
-        flake.classList.add('snowflake');
-        flake.style.left = Math.random() * 100 + 'vw';
-        const size = Math.random() * 3 + 2 + 'px'; 
-        flake.style.width = size; flake.style.height = size;
-        flake.style.animationDuration = Math.random() * 5 + 4 + 's';
-        flake.style.opacity = Math.random() * 0.5 + 0.1;
-        container.appendChild(flake);
-        setTimeout(() => { flake.remove(); }, 8000);
-      }, 150);
+    const disk = document.getElementById("disk-icon");
+    const playBtn = document.getElementById("btn-play-pause");
+    
+    function toggleAudio() {
+      if (mainAudio.paused) {
+        mainAudio.play();
+        disk.classList.add("playing");
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      } else {
+        mainAudio.pause();
+        disk.classList.remove("playing");
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      }
     }
-    createSnow();
+    function changeVolume(val) { mainAudio.volume = val; }
+
+    function createFallingEmojis() {
+      const container = document.getElementById('emoji-container');
+      const emojis = ['🎃', '👻', '🦇', '🕷️', '🕸️', '💀'];
+      setInterval(() => {
+        const emojiEl = document.createElement('div');
+        emojiEl.classList.add('falling-emoji');
+        emojiEl.style.left = Math.random() * 100 + 'vw';
+        emojiEl.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emojiEl.style.fontSize = Math.random() * 12 + 16 + 'px'; 
+        emojiEl.style.animationDuration = Math.random() * 5 + 6 + 's';
+        emojiEl.style.opacity = Math.random() * 0.4 + 0.3;
+        container.appendChild(emojiEl);
+        setTimeout(() => { emojiEl.remove(); }, 12000);
+      }, 300);
+    }
+    createFallingEmojis();
 
     document.addEventListener('mousemove', (e) => {
       if (document.getElementById("rejection-screen").style.display === "flex") {
         const xAxis = (e.pageX - window.innerWidth / 2) / 100;
         const yAxis = -(e.pageY - window.innerHeight / 2) / 100; 
         const rejectionCard = document.getElementById('rejection-content');
-        if (rejectionCard) {
-          rejectionCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        }
+        if (rejectionCard) rejectionCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
       }
     });
 
@@ -386,17 +384,16 @@
       const titleElem = document.getElementById("page-title");
       let favicon = document.getElementById("page-favicon");
       const newFavicon = favicon.cloneNode(true);
-
       document.querySelectorAll('.cloak-btn').forEach(btn => btn.classList.remove('active'));
 
       if (type === 'clever') {
-        document.title = "resources";
-        titleElem.textContent = "resources";
+        document.title = "Resources";
+        titleElem.textContent = "Resources";
         newFavicon.href = "https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128";
         document.getElementById("btn-clever").classList.add("active");
       } else if (type === 'canvas') {
-        document.title = "dashboard";
-        titleElem.textContent = "dashboard";
+        document.title = "Dashboard";
+        titleElem.textContent = "Dashboard";
         newFavicon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
         document.getElementById("btn-canvas").classList.add("active");
       }
@@ -406,7 +403,6 @@
     function triggerRejection() {
       document.getElementById("master-security-gate").style.display = "none";
       document.getElementById("rejection-screen").style.display = "flex";
-      
       mainAudio.pause();
       
       const rejAudio = document.getElementById("rejection-audio");
@@ -415,26 +411,29 @@
 
       let timeLeft = 15;
       const timerEl = document.getElementById("timer");
-      
       const countdownInterval = setInterval(() => {
         timeLeft--;
         timerEl.textContent = timeLeft;
         if (timeLeft <= 0) {
           clearInterval(countdownInterval);
           window.close();
-          window.location.href = "https://classroom.google.com";
+          window.location.href = "https://clever.com";
         }
       }, 1000);
     }
 
     function verifyAccess() {
-      const entered = document.getElementById("passInput").value;
-      if (ALLOWED_PASSCODES.includes(entered.toLowerCase().trim())) {
+      const entered = document.getElementById("passInput").value.toLowerCase().trim();
+      const encodedInput = btoa(entered); 
+      
+      if (ENCRYPTED_PASSCODES.includes(encodedInput)) {
         document.getElementById("master-security-gate").style.display = "none";
         document.getElementById("launch-screen").style.display = "flex";
         
-        // start background audio only upon successful entry
-        mainAudio.play().catch(e => console.log("audio play blocked."));
+        mainAudio.play().then(() => {
+          document.getElementById("audio-widget").classList.add("visible");
+          disk.classList.add("playing");
+        }).catch(e => console.log("audio play blocked."));
       } else {
         triggerRejection();
       }
@@ -444,7 +443,7 @@
       if (e.key === "Enter") verifyAccess();
     });
 
-    let activeRedirect = 'google';
+    let activeRedirect = 'clever';
 
     function toggleDropdown(event) {
       event.stopPropagation();
@@ -470,65 +469,54 @@
     });
 
     function processRedirect() {
-      if (activeRedirect === 'google') {
-        window.location.replace("https://www.google.com");
-      } else if (activeRedirect === 'clever') {
-        window.location.replace("https://clever.com");
-      }
+      if (activeRedirect === 'canvas') window.location.replace("https://canvas.instructure.com/");
+      else if (activeRedirect === 'clever') window.location.replace("https://clever.com");
     }
 
     function downloadLocalFile(filename) {
       fetch(filename)
-        .then(response => {
-          if (!response.ok) throw new Error("could not find file.");
-          return response.blob();
-        })
+        .then(response => { if (!response.ok) throw new Error(); return response.blob(); })
         .then(blob => {
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
-          a.href = url;
-          a.download = filename; 
-          document.body.appendChild(a); 
-          a.click(); 
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          
+          a.href = url; a.download = filename; 
+          document.body.appendChild(a); a.click(); 
+          document.body.removeChild(a); URL.revokeObjectURL(url);
           setTimeout(processRedirect, 1500);
         })
-        .catch(err => alert("error downloading: ensure " + filename + " is uploaded to github."));
+        .catch(err => alert("error downloading: ensure " + filename + " is on github."));
     }
 
     function launchLocalFile(filename) {
-      let popup = window.open("about:blank", "_blank");
-      
-      if (!popup || popup.closed || typeof popup.closed == 'undefined') {
-        alert("pop-up blocker prevented launch! please click the icon in your address bar to allow pop-ups for this site, or use the download option.");
+      let win = window.open("about:blank", "_blank", "width=1280,height=720,top=100,left=100");
+      if (!win || win.closed) {
+        alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
         return;
       }
-
-      popup.document.write("<body style='background:#0f172a;color:#f8fafc;display:flex;align-items:center;justify-content:center;font-family:sans-serif;'><h2>loading " + filename + " safely...</h2></body>");
       
-      popup.document.title = "classes";
-      let icon = popup.document.createElement("link");
+      win.document.title = "Dashboard";
+      let icon = win.document.createElement("link");
       icon.rel = "icon"; icon.type = "image/png";
-      icon.href = "https://ssl.gstatic.com/classroom/favicon.png";
-      popup.document.head.appendChild(icon);
+      icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+      win.document.head.appendChild(icon);
 
-      fetch(filename)
-        .then(response => {
-          if (!response.ok) throw new Error("could not find " + filename + " on the server.");
-          return response.text();
-        })
-        .then(htmlContent => {
-          popup.document.open();
-          popup.document.write(htmlContent);
-          popup.document.close();
+      win.document.body.style.margin = "0";
+      win.document.body.style.padding = "0";
+      win.document.body.style.overflow = "hidden";
+      win.document.body.style.backgroundColor = "#050505";
 
-          processRedirect();
-        })
-        .catch(err => {
-          popup.document.body.innerHTML = "<h3 style='color:#ef4444;text-align:center;font-family:sans-serif;margin-top:20vh;'>error: " + err.message + " - make sure you uploaded the file to github.</h3>";
-        });
+      let iframe = win.document.createElement("iframe");
+      iframe.style.border = "none";
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.margin = "0";
+      
+      let link = document.createElement("a");
+      link.href = filename;
+      iframe.src = link.href; 
+      
+      win.document.body.appendChild(iframe);
+      processRedirect();
     }
   </script>
 </body>
