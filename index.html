@@ -71,35 +71,35 @@
     }
 
     .cloak-selector-container { margin-bottom: 24px; }
-    .cloak-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; text-align: center; }
+    .cloak-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: lowercase; margin-bottom: 12px; font-weight: 700; text-align: center; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
     .cloak-btn { 
       display: flex; align-items: center; gap: 6px; padding: 8px 16px; 
       background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); 
       border-radius: 99px; color: #94a3b8; font-size: 13px; font-weight: 600; 
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-transform: lowercase;
     }
     .cloak-btn img { width: 16px; height: 16px; border-radius: 3px; }
     .cloak-btn:hover { background: rgba(255, 255, 255, 0.1); color: #f8fafc; transform: scale(1.02); }
     .cloak-btn.active { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.15); }
 
-    .gate-title { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.5px; }
-    .gate-sub { font-size: 14px; color: #94a3b8; margin-bottom: 24px; }
+    .gate-title { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.5px; text-transform: lowercase; }
+    .gate-sub { font-size: 14px; color: #94a3b8; margin-bottom: 24px; text-transform: lowercase; }
     
     .gate-input { 
       width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4); 
       border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 16px; 
       color: #ea580c; font-size: 16px; text-align: center; letter-spacing: 4px; 
-      outline: none; transition: all 0.3s ease; margin-bottom: 20px; 
+      outline: none; transition: all 0.3s ease; margin-bottom: 20px; text-transform: lowercase;
     }
     .gate-input:focus { border-color: #ea580c; background: rgba(0,0,0,0.6); box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15); }
-    .gate-input::placeholder { color: #475569; letter-spacing: 2px; }
+    .gate-input::placeholder { color: #475569; letter-spacing: 2px; text-transform: lowercase; }
     
     .gate-btn { 
       width: 100%; padding: 16px; background: #ea580c; color: #ffffff; 
       border: none; border-radius: 16px; font-size: 15px; font-weight: 600; 
       cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 20px; 
-      display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.2);
+      display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.2); text-transform: lowercase;
     }
     .gate-btn:hover { background: #c2410c; transform: scale(1.02); box-shadow: 0 15px 25px rgba(234, 88, 12, 0.3); }
 
@@ -107,7 +107,7 @@
     .custom-dropdown-btn {
       width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
       border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-      color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+      color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase;
     }
     .custom-dropdown-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
     .dropdown-icon-left { color: #ea580c; margin-right: 12px; }
@@ -121,7 +121,7 @@
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 100;
     }
     .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-item { padding: 12px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: #94a3b8; transition: all 0.2s ease; }
+    .dropdown-item { padding: 12px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: #94a3b8; transition: all 0.2s ease; text-transform: lowercase; }
     .dropdown-item:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
 
     .library-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
@@ -132,11 +132,11 @@
     }
     .library-row:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); border-color: rgba(249, 115, 22, 0.3); }
     
-    .library-name { font-weight: 600; font-size: 15px; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
+    .library-name { font-weight: 600; font-size: 15px; color: #f8fafc; display: flex; align-items: center; gap: 10px; text-transform: lowercase; }
     .library-name i { color: #ea580c; }
     
     .library-actions { display: flex; gap: 8px; }
-    .btn-launch { background: #ea580c; color: #ffffff; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .btn-launch { background: #ea580c; color: #ffffff; border: none; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase; }
     .btn-launch:hover { background: #c2410c; transform: scale(1.04); box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
     
     .btn-dl { background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
@@ -144,33 +144,32 @@
 
     .changelog-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
     .changelog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .changelog-title { font-size: 15px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+    .changelog-title { font-size: 15px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; text-transform: lowercase; }
     .changelog-title i { color: #ea580c; }
-    .version-badge { background: #ea580c; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .version-badge { background: #ea580c; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: lowercase; }
     
     .changelog-content { overflow-y: auto; padding-right: 8px; max-height: 220px; flex: 1; }
     .changelog-content::-webkit-scrollbar { width: 4px; }
     .changelog-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
     .changelog-content::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
     
-    .version-header { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .version-header { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: lowercase; }
 
     .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .changelog-list li { font-size: 12px; color: #94a3b8; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500; }
+    .changelog-list li { font-size: 12px; color: #94a3b8; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500; text-transform: lowercase; }
     .changelog-list li::before { content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #ea580c; border-radius: 50%; }
     .changelog-list li strong { color: #f8fafc; font-weight: 700; }
 
-    .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; }
+    .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; text-transform: lowercase; }
     .love-text-left { text-align: left; margin-top: 8px; cursor: pointer; transition: 0.2s; }
     .love-text-left:hover { color: #94a3b8; }
 
     #rejection-screen { perspective: 1000px; }
     #rejection-content { transition: transform 0.1s linear; transform-style: preserve-3d; z-index: 10; }
     .rejection-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(220, 38, 38, 0.5); border-radius: 28px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(220, 38, 38, 0.2); text-align: center; }
-    .rejection-text { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; }
+    .rejection-text { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; text-transform: lowercase; }
     .countdown { color: #ef4444; font-weight: 800; font-size: 28px; text-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
 
-    /* ================= UPDATED PREMIUM AUDIO WIDGET ================= */
     .audio-widget {
       position: fixed; bottom: 24px; right: 24px; z-index: 100;
       display: flex; align-items: center; gap: 14px;
@@ -197,11 +196,11 @@
     .disk.playing { animation-play-state: running; }
     .disk::before {
       content: ''; position: absolute; width: 16px; height: 16px;
-      background: #ea580c; border-radius: 50%; /* orange label */
+      background: #ea580c; border-radius: 50%;
     }
     .disk::after {
       content: ''; position: absolute; width: 4px; height: 4px;
-      background: #050505; border-radius: 50%; /* spindle hole */
+      background: #050505; border-radius: 50%;
     }
 
     .playlist-info {
@@ -209,10 +208,10 @@
     }
     .playlist-label {
       font-size: 11px; font-weight: 800; color: #ea580c; letter-spacing: 0.5px;
-      text-transform: uppercase; line-height: 1; margin-bottom: 3px;
+      text-transform: lowercase; line-height: 1; margin-bottom: 3px; font-family: 'Inter', sans-serif;
     }
     .playlist-sub {
-      font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1;
+      font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: lowercase; letter-spacing: 0.5px; line-height: 1; font-family: 'Inter', sans-serif;
     }
 
     .btn-play-pause { background: none; border: none; color: #f8fafc; font-size: 14px; cursor: pointer; transition: color 0.2s; padding: 4px; }
@@ -241,7 +240,6 @@
   <div class="ambient-blob blob-3"></div>
   <div id="emoji-container"></div>
 
-  <!-- UPGRADED AUDIO WIDGET -->
   <div id="audio-widget" class="audio-widget">
     <div class="disk-container">
       <div id="disk-icon" class="disk"></div>
@@ -260,15 +258,15 @@
         <div class="cloak-label">browser mask</div>
         <div class="cloak-btn-group">
           <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')">
-            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> Clever
+            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> clever
           </button>
           <button type="button" class="cloak-btn" id="btn-canvas" onclick="setDisguise('canvas')">
-            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> Canvas
+            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> canvas
           </button>
         </div>
       </div>
 
-      <h1 class="gate-title">Authentication Required</h1>
+      <h1 class="gate-title">authentication required</h1>
       <p class="gate-sub">enter your secure passcode to continue.</p>
       
       <input type="password" id="passInput" class="gate-input" placeholder="••••••••" autofocus autocomplete="off" />
@@ -282,7 +280,7 @@
     <div class="gate-card gate-card-wide animate-pop">
       
       <div class="launch-section">
-        <h1 class="gate-title">Access Granted</h1>
+        <h1 class="gate-title">access granted</h1>
         <p class="gate-sub">select a library to initiate.</p>
         
         <div class="dropdown-container">
@@ -305,7 +303,7 @@
             <div class="library-name"><i class="fa-solid fa-gamepad"></i> lazylist</div>
             <div class="library-actions">
               <button class="btn-launch" onclick="launchLocalFile('lazylist.html')">launch</button>
-              <button class="btn-dl" title="download html" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
+              <button class="btn-dl" onclick="downloadLocalFile('lazylist.html')"><i class="fa-solid fa-download"></i></button>
             </div>
           </div>
 
@@ -313,7 +311,7 @@
             <div class="library-name"><i class="fa-solid fa-snowflake"></i> arctic</div>
             <div class="library-actions">
               <button class="btn-launch" onclick="launchLocalFile('arctic.html')">launch</button>
-              <button class="btn-dl" title="download html" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
+              <button class="btn-dl" onclick="downloadLocalFile('arctic.html')"><i class="fa-solid fa-download"></i></button>
             </div>
           </div>
         </div>
@@ -371,13 +369,7 @@
       }
     });
 
-    const ENCRYPTED_PASSCODES = [
-      "Y29vbGJhY29u",
-      "bHVpc2lzdGhlYmVzdA==",
-      "bm9zZXJ5",
-      "a2luZ3NsZXk=",
-      "bWFzb25tYXNvbg=="
-    ];
+    const _0x1a2b = [-75372138, 1338575024, -1039869622, 134262106, -1311029279];
 
     const mainAudio = document.getElementById("main-audio");
     mainAudio.volume = 0.15;
@@ -400,7 +392,7 @@
 
     function createFallingEmojis() {
       const container = document.getElementById('emoji-container');
-      const emojis = ['🎃', '👻', '🦇', '🕷️', '🕸️', '💀'];
+      const emojis = ['🎃', '👻', '🦇', '🕷️️', '🕸️', '💀'];
       setInterval(() => {
         const emojiEl = document.createElement('div');
         emojiEl.classList.add('falling-emoji');
@@ -451,7 +443,7 @@
       
       const rejAudio = document.getElementById("rejection-audio");
       rejAudio.volume = 0.2; 
-      rejAudio.play().catch(e => console.log("audio play blocked."));
+      rejAudio.play().catch(e => {});
 
       let timeLeft = 15;
       const timerEl = document.getElementById("timer");
@@ -467,17 +459,21 @@
     }
 
     function verifyAccess() {
-      const entered = document.getElementById("passInput").value.toLowerCase().trim();
-      const encodedInput = btoa(entered); 
+      const e = document.getElementById("passInput").value.toLowerCase().trim();
+      let h = 0;
+      for (let i = 0; i < e.length; i++) {
+        h = ((h << 5) - h) + e.charCodeAt(i);
+        h &= h;
+      }
       
-      if (ENCRYPTED_PASSCODES.includes(encodedInput)) {
+      if (_0x1a2b.includes(h)) {
         document.getElementById("master-security-gate").style.display = "none";
         document.getElementById("launch-screen").style.display = "flex";
         
         mainAudio.play().then(() => {
           document.getElementById("audio-widget").classList.add("visible");
           disk.classList.add("playing");
-        }).catch(e => console.log("audio play blocked."));
+        }).catch(e => {});
       } else {
         triggerRejection();
       }
