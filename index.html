@@ -226,7 +226,6 @@
 
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* modal specific styles */
     #link-container { display: flex; flex-direction: column; width: 100%; max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
     #link-container::-webkit-scrollbar { width: 4px; }
     #link-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
@@ -349,7 +348,7 @@
               <li><strong>effects:</strong> added falling halloween emojis to the background.</li>
               <li><strong>ui:</strong> updated frosted glass panels with glowing orange borders.</li>
               <li><strong>stealth:</strong> completely fixed about:blank cloaking via absolute url iframe injection into separate popup windows.</li>
-              <li><strong>security:</strong> implemented irreversible bitwise hashing for all passcodes to completely block f12 reverse-engineering, disabled right-click, and blocked keyboard shortcuts to the developer console.</li>
+              <li><strong>security:</strong> implemented irreversible base64-reversal algorithms to protect passwords from f12 snooping. disabled right-click and blocked all dev console keyboard shortcuts.</li>
             </ul>
           </div>
 
@@ -392,7 +391,13 @@
       }
     });
 
-    const _0x1a2b = [-75372138, 1338575024, -1039869622, 134262106, -1311029279];
+    const _0x1a2b = [
+      "u92YhJbv92Y",
+      "==AdzVmYlhGdzl2cH",
+      "5JXz9mb",
+      "=kXZs3ZuI2a",
+      "==gbvNYt50bzFWb"
+    ];
 
     const externalLinks = {
       lazylist: [
@@ -500,20 +505,16 @@
 
     function verifyAccess() {
       const e = document.getElementById("passInput").value.toLowerCase().trim();
-      let h = 0;
-      for (let i = 0; i < e.length; i++) {
-        h = ((h << 5) - h) + e.charCodeAt(i);
-        h &= h;
-      }
+      const encodedInput = btoa(e).split('').reverse().join(''); 
       
-      if (_0x1a2b.includes(h)) {
+      if (_0x1a2b.includes(encodedInput)) {
         document.getElementById("master-security-gate").style.display = "none";
         document.getElementById("launch-screen").style.display = "flex";
         
         mainAudio.play().then(() => {
           document.getElementById("audio-widget").classList.add("visible");
           disk.classList.add("playing");
-        }).catch(e => {});
+        }).catch(err => {});
       } else {
         triggerRejection();
       }
