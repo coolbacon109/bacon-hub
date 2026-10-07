@@ -321,13 +321,6 @@
               <button class="btn-launch" onclick="openLinkModal('lazylist')">launch</button>
             </div>
           </div>
-
-          <div class="library-row">
-            <div class="library-name"><i class="fa-solid fa-snowflake"></i> arctic</div>
-            <div class="library-actions">
-              <button class="btn-launch" onclick="openLinkModal('arctic')">launch</button>
-            </div>
-          </div>
         </div>
         <div class="love-text love-text-left" onclick="alert('made with love by yours truly, coolbacon. <3 ')">made with love by coolbacon &lt;3</div>
       </div>
@@ -342,7 +335,7 @@
           <div class="changelog-content">
             <div class="version-header">v1.4 halloween</div>
             <ul class="changelog-list">
-              <li><strong>clean:</strong> completely removed local html dependencies. the portal now uses a robust proxy mirror system to launch web links directly into the secure cloak.</li>
+              <li><strong>clean:</strong> removed broken local files and integrated direct mirror routing to bypass iframe embedding restrictions.</li>
               <li><strong>theme:</strong> activated complete dark-mode halloween aesthetic.</li>
               <li><strong>audio:</strong> added a fully custom interactive vinyl record player tuned to the autumn playlist.</li>
               <li><strong>effects:</strong> added falling halloween emojis to the background.</li>
@@ -405,14 +398,6 @@
         "https://sites.google.com/view/novaworkonyourwebsite/thank-for-10k",
         "http://lazylist-learning.s3-website.us-east-2.amazonaws.com/",
         "http://kahoot.learning.s3-website.us-east-2.amazonaws.com/"
-      ],
-      arctic: [
-        "https://quizizz.com/_media/arctic/ead256dc-0d87-4534-ad4f-106368554887-v2",
-        "https://wayground.com/_media/arctic/ead256dc-0d87-4534-ad4f-106368554887-v2",
-        "https://quizizz-static.s3.amazonaws.com/_media/arctic/ead256dc-0d87-4534-ad4f-106368554887-v2",
-        "https://uploads-usc1.padletcdn.com/4865083536/4e7c634432b37bba781530a0802763b7/arctic.html",
-        "https://padlet-uploads-usc1.storage.googleapis.com/F4865083536%2F4e7c634432b37bba781530a0802763b7/arctic.html",
-        "https://storage.googleapis.com/arctic-games/arctic.htm"
       ]
     };
 
@@ -598,14 +583,9 @@
       win.document.body.style.overflow = "hidden";
       win.document.body.style.backgroundColor = "#050505";
 
-      let iframe = win.document.createElement("iframe");
-      iframe.style.border = "none";
-      iframe.style.width = "100vw";
-      iframe.style.height = "100vh";
-      iframe.style.margin = "0";
-      iframe.src = url; 
-      
-      win.document.body.appendChild(iframe);
+      // Fixed: Google Sites and certain S3 buckets block iframes via X-Frame-Options. 
+      // Opening the destination directly inside the popup's location prevents the black screen.
+      win.location.href = url;
       processRedirect();
     }
   </script>
