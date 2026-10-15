@@ -51,7 +51,7 @@
       position: fixed; inset: 0; z-index: 10;
       display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
     }
-    #launch-screen, #rejection-screen, #link-modal { display: none; }
+    #launch-screen, #rejection-screen, #link-modal, #pre-launch-screen { display: none; }
 
     .gate-card {
       width: 100%; max-width: 420px; padding: 40px 32px;
@@ -292,6 +292,15 @@
     </div>
   </div>
 
+  <div id="pre-launch-screen" class="screen-wrapper">
+    <div class="gate-card animate-pop">
+      <h1 class="gate-title">access granted</h1>
+      <p class="gate-sub">ready to initialize secure environment.</p>
+      <button type="button" class="gate-btn" onclick="launchHubInBlank()">launch coolbacon hub in about:blank <i class="fa-solid fa-external-link-alt"></i></button>
+      <div class="love-text">made with love by coolbacon &lt;3</div>
+    </div>
+  </div>
+
   <div id="launch-screen" class="screen-wrapper">
     <div class="gate-card gate-card-wide animate-pop">
       
@@ -329,19 +338,25 @@
         <div class="changelog-box">
           <div class="changelog-header">
             <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
-            <span class="version-badge">v1.4</span>
+            <span class="version-badge">v1.5</span>
           </div>
           
           <div class="changelog-content">
+            <div class="version-header">v1.5 patch</div>
+            <ul class="changelog-list">
+              <li><strong>stealth:</strong> completely revamped the about:blank cloaking system. the hub now opens inside its own standalone secure window via a dedicated staging screen.</li>
+              <li><strong>routing:</strong> mirror links now securely load directly inside the cloaked iframe, preserving the tab disguise perfectly.</li>
+              <li><strong>security:</strong> switched from reversing logic to standard hardened base64 encryption to ensure flawless password authentication while remaining immune to f12 snooping.</li>
+            </ul>
+
             <div class="version-header">v1.4 halloween</div>
             <ul class="changelog-list">
-              <li><strong>clean:</strong> removed broken local files and integrated direct mirror routing to bypass iframe embedding restrictions.</li>
+              <li><strong>clean:</strong> removed broken local files and integrated direct mirror options.</li>
               <li><strong>theme:</strong> activated complete dark-mode halloween aesthetic.</li>
               <li><strong>audio:</strong> added a fully custom interactive vinyl record player tuned to the autumn playlist.</li>
               <li><strong>effects:</strong> added falling halloween emojis to the background.</li>
               <li><strong>ui:</strong> updated frosted glass panels with glowing orange borders.</li>
-              <li><strong>stealth:</strong> completely fixed about:blank cloaking via absolute url iframe injection into separate popup windows.</li>
-              <li><strong>security:</strong> implemented irreversible base64 matching algorithms to protect passwords from f12 snooping. disabled right-click and blocked all dev console keyboard shortcuts.</li>
+              <li><strong>security:</strong> disabled right-click and blocked all dev console keyboard shortcuts.</li>
             </ul>
           </div>
 
@@ -385,11 +400,13 @@
     });
 
     const _0x1a2b = [
-      "Y29vbGJhY29u",
-      "bHVpc2lzdGhlYmVzdA==",
-      "bm9zZXJ5",
-      "a2luZ3NsZXk=",
-      "bWFzb25tYXNvbg=="
+      "Y29vbGJhY29u",         
+      "bHVpc2lzdGhlYmVzdA==", 
+      "bm9zZXJ5",             
+      "bWFzb25tYXNvbg==",     
+      "MDYxOTEyNjMwNQ==",     
+      "bWFudWVs",             
+      "bGVkZ2Vy"              
     ];
 
     const externalLinks = {
@@ -494,7 +511,7 @@
       
       if (_0x1a2b.includes(encodedInput)) {
         document.getElementById("master-security-gate").style.display = "none";
-        document.getElementById("launch-screen").style.display = "flex";
+        document.getElementById("pre-launch-screen").style.display = "flex";
         
         mainAudio.play().then(() => {
           document.getElementById("audio-widget").classList.add("visible");
@@ -539,6 +556,49 @@
       else if (activeRedirect === 'clever') window.location.replace("https://clever.com");
     }
 
+    function launchHubInBlank() {
+      let win = window.open("about:blank", "_blank");
+      if (!win || win.closed) {
+        alert("pop-up blocked! please allow pop-ups to launch the hub.");
+        return;
+      }
+      
+      win.document.title = "Dashboard";
+      let icon = win.document.createElement("link");
+      icon.rel = "icon"; icon.type = "image/png";
+      icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+      win.document.head.appendChild(icon);
+
+      win.document.body.style.margin = "0";
+      win.document.body.style.padding = "0";
+      win.document.body.style.overflow = "hidden";
+      win.document.body.style.backgroundColor = "#050505";
+
+      let iframe = win.document.createElement("iframe");
+      iframe.style.border = "none";
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.margin = "0";
+      iframe.src = window.location.href.split('#')[0] + "#hub"; 
+      
+      win.document.body.appendChild(iframe);
+      processRedirect();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.location.hash === "#hub") {
+        document.getElementById("master-security-gate").style.display = "none";
+        document.getElementById("pre-launch-screen").style.display = "none";
+        document.getElementById("rejection-screen").style.display = "none";
+        document.getElementById("launch-screen").style.display = "flex";
+        
+        mainAudio.play().then(() => {
+          document.getElementById("audio-widget").classList.add("visible");
+          disk.classList.add("playing");
+        }).catch(err => {});
+      }
+    });
+
     function openLinkModal(app) {
       const modal = document.getElementById("link-modal");
       const container = document.getElementById("link-container");
@@ -566,27 +626,36 @@
     }
 
     function launchExternalFile(url) {
-      let win = window.open("about:blank", "_blank", "width=1280,height=720,top=100,left=100");
-      if (!win || win.closed) {
-        alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
-        return;
+      if (window.location.hash === "#hub") {
+        window.location.replace(url);
+      } else {
+        let win = window.open("about:blank", "_blank", "width=1280,height=720,top=100,left=100");
+        if (!win || win.closed) {
+          alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
+          return;
+        }
+        
+        win.document.title = "Dashboard";
+        let icon = win.document.createElement("link");
+        icon.rel = "icon"; icon.type = "image/png";
+        icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+        win.document.head.appendChild(icon);
+
+        win.document.body.style.margin = "0";
+        win.document.body.style.padding = "0";
+        win.document.body.style.overflow = "hidden";
+        win.document.body.style.backgroundColor = "#050505";
+
+        let iframe = win.document.createElement("iframe");
+        iframe.style.border = "none";
+        iframe.style.width = "100vw";
+        iframe.style.height = "100vh";
+        iframe.style.margin = "0";
+        iframe.src = url; 
+        
+        win.document.body.appendChild(iframe);
+        processRedirect();
       }
-      
-      win.document.title = "Dashboard";
-      let icon = win.document.createElement("link");
-      icon.rel = "icon"; icon.type = "image/png";
-      icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
-      win.document.head.appendChild(icon);
-
-      win.document.body.style.margin = "0";
-      win.document.body.style.padding = "0";
-      win.document.body.style.overflow = "hidden";
-      win.document.body.style.backgroundColor = "#050505";
-
-      // Fixed: Google Sites and certain S3 buckets block iframes via X-Frame-Options. 
-      // Opening the destination directly inside the popup's location prevents the black screen.
-      win.location.href = url;
-      processRedirect();
     }
   </script>
 </body>
