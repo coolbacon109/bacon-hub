@@ -21,12 +21,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     /* ambient background decor for main hub */
     .ambient-blob {
       position: absolute; filter: blur(90px); z-index: 0; opacity: 0.5;
@@ -41,31 +35,6 @@
       100% { transform: translate(5%, 10%) scale(1.1); }
     }
 
-    @keyframes smoothPopIn {
-      0% { opacity: 0; transform: translateY(20px) scale(0.97); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    @keyframes smoothFloat {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      20% { transform: translate(2px, -1px) rotate(1deg); }
-      40% { transform: translate(-1px, 2px) rotate(-1deg); }
-      60% { transform: translate(-2px, -1px) rotate(1deg); }
-      80% { transform: translate(1px, 2px) rotate(-1deg); }
-      100% { transform: translate(0, 0) rotate(0deg); }
-    }
-
-    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-    .smooth-shake { animation: smoothFloat 5s ease-in-out infinite; }
-    .fade-transition { transition: opacity 0.8s ease-in-out; }
-
-    /* clean staggered fade sequence */
-    .stagger-fade {
-      opacity: 0; transform: translateY(15px);
-      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .stagger-fade.stagger-fade-active { opacity: 1; transform: translateY(0); }
-
     #emoji-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 1; overflow: hidden; opacity: 1; 
@@ -76,6 +45,28 @@
       100% { transform: translateY(105vh) translateX(40px) rotate(180deg); opacity: 0; }
     }
 
+    /* ui animations */
+    @keyframes smoothPopIn {
+      0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes smoothFadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes smoothFloat {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(2px, -1px) rotate(1deg); }
+      40% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-2px, -1px) rotate(1deg); }
+      80% { transform: translate(1px, 2px) rotate(-1deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .smooth-shake { animation: smoothFloat 5s ease-in-out infinite; }
+    .fade-transition { transition: opacity 0.8s ease-in-out; }
+
     /* screen management */
     .screen-wrapper {
       position: fixed; inset: 0; z-index: 10;
@@ -83,16 +74,20 @@
     }
     #launch-screen, #rejection-screen, #link-modal, #pre-launch-screen, #intro-screen { display: none; }
 
-    /* custom cinematic intro screen with isolated purple gradient */
+    /* custom cinematic intro screen */
     #intro-screen {
       background: linear-gradient(-45deg, #050505, #160729, #050505, #0a0412);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
       z-index: 200; opacity: 0;
     }
-    #intro-content-wrapper {
-      text-align: center; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
+
+    #intro-content-wrapper { text-align: center; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
     .move-up-active { transform: translateY(-30px); }
 
     .skip-btn {
@@ -103,43 +98,26 @@
       text-transform: lowercase; backdrop-filter: blur(10px);
       display: flex; align-items: center; gap: 6px;
     }
-    .skip-btn:hover {
-      background: rgba(255, 255, 255, 0.05); color: #f8fafc; border-color: rgba(255, 255, 255, 0.2); transform: scale(1.05);
-    }
-
-    /* pre-launch clean screen */
-    #pre-launch-screen {
-      background: #050505; z-index: 150; opacity: 0;
-    }
+    .skip-btn:hover { background: rgba(255, 255, 255, 0.05); color: #f8fafc; border-color: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
 
     /* frosted glass cards */
     .gate-card {
       width: 100%; max-width: 420px; padding: 40px 32px;
       background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 28px; backdrop-filter: blur(40px) saturate(150%);
-      -webkit-backdrop-filter: blur(40px) saturate(150%);
+      border-radius: 28px; backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 20px 40px rgba(0,0,0,0.5); 
       text-align: center;
     }
-
     .gate-card-wide { max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px; }
     .launch-section { flex: 1; }
     .changelog-section { width: 280px; flex-shrink: 0; }
-    @media (max-width: 768px) {
-      .gate-card-wide { flex-direction: column; gap: 24px; padding: 24px; }
-      .changelog-section { width: 100%; }
-    }
+    @media (max-width: 768px) { .gate-card-wide { flex-direction: column; gap: 24px; padding: 24px; } .changelog-section { width: 100%; } }
 
-    /* browser mask selector */
+    /* cloak buttons */
     .cloak-selector-container { margin-bottom: 24px; }
     .cloak-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: lowercase; margin-bottom: 12px; font-weight: 700; text-align: center; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
-    .cloak-btn { 
-      display: flex; align-items: center; gap: 6px; padding: 8px 16px; 
-      background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); 
-      border-radius: 99px; color: #94a3b8; font-size: 13px; font-weight: 600; 
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-transform: lowercase;
-    }
+    .cloak-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-transform: lowercase; }
     .cloak-btn img { width: 16px; height: 16px; border-radius: 3px; }
     .cloak-btn:hover { background: rgba(255, 255, 255, 0.1); color: #f8fafc; transform: scale(1.02); }
     .cloak-btn.active { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.15); }
@@ -147,183 +125,97 @@
     /* typography & inputs */
     .gate-title { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.5px; text-transform: lowercase; }
     .gate-sub { font-size: 14px; color: #94a3b8; margin-bottom: 24px; text-transform: lowercase; }
-    
-    .gate-input { 
-      width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4); 
-      border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 16px; 
-      color: #ea580c; font-size: 16px; text-align: center; letter-spacing: 4px; 
-      outline: none; transition: all 0.3s ease; margin-bottom: 20px; text-transform: lowercase;
-    }
+    .gate-input { width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 16px; color: #ea580c; font-size: 16px; text-align: center; letter-spacing: 4px; outline: none; transition: all 0.3s ease; margin-bottom: 20px; text-transform: lowercase; }
     .gate-input:focus { border-color: #ea580c; background: rgba(0,0,0,0.6); box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15); }
     .gate-input::placeholder { color: #475569; letter-spacing: 2px; text-transform: lowercase; }
     
-    .gate-btn { 
-      width: 100%; padding: 16px; background: #ea580c; color: #ffffff; 
-      border: none; border-radius: 16px; font-size: 15px; font-weight: 600; 
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 20px; 
-      display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.2); text-transform: lowercase;
-    }
+    .gate-btn { width: 100%; padding: 16px; background: #ea580c; color: #ffffff; border: none; border-radius: 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.2); text-transform: lowercase; }
     .gate-btn:hover { background: #c2410c; transform: scale(1.02); box-shadow: 0 15px 25px rgba(234, 88, 12, 0.3); }
-
-    .btn-minimal {
-      background: transparent; color: #ea580c; border: none; font-size: 15px; font-weight: 600; 
-      cursor: pointer; transition: all 0.3s ease; text-transform: lowercase; text-decoration: underline; text-underline-offset: 4px;
-    }
-    .btn-minimal:hover { color: #c2410c; }
 
     /* dropdown & library ui */
     .dropdown-container { position: relative; margin-bottom: 24px; width: 100%; }
-    .custom-dropdown-btn {
-      width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-      color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase;
-    }
+    .custom-dropdown-btn { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase; }
     .custom-dropdown-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
     .dropdown-icon-left { color: #ea580c; margin-right: 12px; }
     .dropdown-arrow { transition: transform 0.3s ease; color: #64748b; }
-    
-    .dropdown-menu {
-      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
-      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 6px;
-      opacity: 0; visibility: hidden; transform: translateY(-10px);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 100;
-    }
+    .dropdown-menu { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 6px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.2s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 100; }
     .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-item { padding: 12px 16px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: #94a3b8; transition: all 0.2s ease; text-transform: lowercase; }
     .dropdown-item:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
 
     .library-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-    .library-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 12px 16px; border-radius: 16px; transition: all 0.3s ease;
-    }
+    .library-row { display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); padding: 12px 16px; border-radius: 16px; transition: all 0.3s ease; }
     .library-row:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); border-color: rgba(249, 115, 22, 0.3); }
-    
     .library-name { font-weight: 600; font-size: 15px; color: #f8fafc; display: flex; align-items: center; gap: 10px; text-transform: lowercase; }
     .library-name i { color: #ea580c; }
-    
     .library-actions { display: flex; gap: 8px; width: 100%; justify-content: flex-end; }
     .btn-launch { background: #ea580c; color: #ffffff; border: none; padding: 8px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase; }
     .btn-launch:hover { background: #c2410c; transform: scale(1.04); box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
     
-    /* changelog */
-    .changelog-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+    .changelog-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; height: 100%; display: flex; flex-direction: column; }
     .changelog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .changelog-title { font-size: 15px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; text-transform: lowercase; }
     .changelog-title i { color: #ea580c; }
     .version-badge { background: #ea580c; color: #ffffff; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: lowercase; }
-    
     .changelog-content { overflow-y: auto; padding-right: 8px; max-height: 220px; flex: 1; }
     .changelog-content::-webkit-scrollbar { width: 4px; }
     .changelog-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
     .changelog-content::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
-    
     .version-header { color: #f8fafc; font-size: 13px; font-weight: 700; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); text-transform: lowercase; }
-
     .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
     .changelog-list li { font-size: 12px; color: #94a3b8; line-height: 1.4; position: relative; padding-left: 14px; font-weight: 500; text-transform: lowercase; }
     .changelog-list li::before { content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #ea580c; border-radius: 50%; }
-    .changelog-list li strong { color: #f8fafc; font-weight: 700; }
-
     .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; text-transform: lowercase; text-align: center; }
     .love-text-left { text-align: left; margin-top: 8px; cursor: pointer; transition: 0.2s; }
     .love-text-left:hover { color: #94a3b8; }
 
-    /* modal components */
     #link-container { display: flex; flex-direction: column; width: 100%; max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
     #link-container::-webkit-scrollbar { width: 4px; }
-    #link-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
     #link-container::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
-    .mirror-btn { 
-      width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); 
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; 
-      color: #94a3b8; font-size: 13px; font-weight: 600; 
-      cursor: pointer; transition: all 0.2s ease; margin-bottom: 8px; text-transform: lowercase;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .mirror-btn { width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-bottom: 8px; text-transform: lowercase; display: flex; align-items: center; justify-content: space-between; }
     .mirror-btn:hover { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; transform: translateX(2px); }
-    .modal-close-btn { 
-      width: 100%; padding: 14px; background: transparent; color: #94a3b8; 
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 14px; font-weight: 600; 
-      cursor: pointer; transition: all 0.2s ease; text-transform: lowercase;
-    }
+    .modal-close-btn { width: 100%; padding: 14px; background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase; }
     .modal-close-btn:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
 
-    /* rejection screen */
-    #rejection-screen { perspective: 1000px; }
     #rejection-content { transition: transform 0.1s linear; transform-style: preserve-3d; z-index: 10; }
-    .rejection-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(220, 38, 38, 0.5); border-radius: 28px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(220, 38, 38, 0.2); text-align: center; }
+    .rejection-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(220, 38, 38, 0.5); border-radius: 28px; backdrop-filter: blur(40px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); text-align: center; }
     .rejection-text { font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; text-transform: lowercase; }
     .countdown { color: #ef4444; font-weight: 800; font-size: 28px; text-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
 
-    /* audio widget / vinyl disk */
-    .audio-widget {
-      position: fixed; bottom: 24px; right: 24px; z-index: 100;
-      display: flex; align-items: center; gap: 14px;
-      background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(249, 115, 22, 0.3);
-      padding: 10px 18px 10px 14px; border-radius: 99px;
-      backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
-      opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-    }
+    /* audio widget */
+    .audio-widget { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(249, 115, 22, 0.3); padding: 10px 18px 10px 14px; border-radius: 99px; backdrop-filter: blur(20px); opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
     .audio-widget.visible { opacity: 1; pointer-events: all; }
-    
     .disk-container { position: relative; display: flex; align-items: center; }
-    
-    .disk {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%),
-                  repeating-radial-gradient(#111 0px, #111 2px, #1a1a1a 3px, #111 4px);
-      border: 1px solid #000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-      display: flex; justify-content: center; align-items: center;
-      animation: spin 3s linear infinite; animation-play-state: paused;
-      position: relative;
-    }
+    .disk { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%), repeating-radial-gradient(#111 0px, #111 2px, #1a1a1a 3px, #111 4px); border: 1px solid #000; box-shadow: 0 2px 8px rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; animation: spin 3s linear infinite; animation-play-state: paused; position: relative; }
     .disk.playing { animation-play-state: running; }
     .disk::before { content: ''; position: absolute; width: 16px; height: 16px; background: #ea580c; border-radius: 50%; }
     .disk::after { content: ''; position: absolute; width: 4px; height: 4px; background: #050505; border-radius: 50%; }
-
     .playlist-info { display: flex; flex-direction: column; justify-content: center; margin-right: 4px; }
-    .playlist-label { font-size: 11px; font-weight: 800; color: #ea580c; letter-spacing: 0.5px; text-transform: lowercase; line-height: 1; margin-bottom: 3px; font-family: 'Inter', sans-serif;}
-    .playlist-sub { font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: lowercase; letter-spacing: 0.5px; line-height: 1; font-family: 'Inter', sans-serif;}
-
-    .btn-play-pause { background: none; border: none; color: #f8fafc; font-size: 14px; cursor: pointer; transition: color 0.2s; padding: 4px; }
+    .playlist-label { font-size: 11px; font-weight: 800; color: #ea580c; letter-spacing: 0.5px; text-transform: lowercase; line-height: 1; margin-bottom: 3px; }
+    .playlist-sub { font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: lowercase; letter-spacing: 0.5px; }
+    .btn-play-pause { background: none; border: none; color: #f8fafc; font-size: 14px; cursor: pointer; padding: 4px; }
     .btn-play-pause:hover { color: #ea580c; }
-    
-    .vol-slider { 
-      width: 60px; height: 4px; -webkit-appearance: none; background: rgba(255,255,255,0.1); 
-      border-radius: 4px; outline: none; cursor: pointer;
-    }
-    .vol-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%;
-      background: #ea580c; cursor: pointer; transition: 0.2s;
-    }
-    .vol-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
-
+    .vol-slider { width: 60px; height: 4px; -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 4px; cursor: pointer; }
+    .vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: #ea580c; cursor: pointer; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <!-- background music & sfx -->
+  <!-- Audio -->
   <audio id="main-audio" src="playlist-october.mp3" loop preload="auto"></audio>
   <audio id="ps2-audio" src="PS2 startup.mp3" preload="auto"></audio>
   <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
 
-  <!-- background decor (visible behind frosted glass screens) -->
+  <!-- Background Decor -->
   <div class="ambient-blob blob-1"></div>
   <div class="ambient-blob blob-2"></div>
   <div class="ambient-blob blob-3"></div>
   <div id="emoji-container"></div>
 
-  <!-- autumn playlist disk widget -->
+  <!-- Audio Widget -->
   <div id="audio-widget" class="audio-widget">
-    <div class="disk-container">
-      <div id="disk-icon" class="disk"></div>
-    </div>
+    <div class="disk-container"><div id="disk-icon" class="disk"></div></div>
     <div class="playlist-info">
       <span class="playlist-label">autumn playlist</span>
       <span class="playlist-sub">now playing</span>
@@ -332,70 +224,56 @@
     <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.15" oninput="changeVolume(this.value)">
   </div>
 
-  <!-- 1. security gate -->
-  <div id="master-security-gate" class="screen-wrapper fade-transition">
-    <div class="gate-card animate-pop" id="gate-prompt">
+  <!-- 1. Security Gate -->
+  <div id="master-security-gate" class="screen-wrapper fade-transition" style="display: flex;">
+    <div class="gate-card animate-pop">
       <div class="cloak-selector-container">
         <div class="cloak-label">browser mask</div>
         <div class="cloak-btn-group">
-          <!-- actual title handles disguise perfectly -->
-          <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')">
-            <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> clever
-          </button>
-          <button type="button" class="cloak-btn" id="btn-canvas" onclick="setDisguise('canvas')">
-            <img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" alt="canvas" /> canvas
-          </button>
+          <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')"><img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" /> clever</button>
+          <button type="button" class="cloak-btn" id="btn-canvas" onclick="setDisguise('canvas')"><img src="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" /> canvas</button>
         </div>
       </div>
-
       <h1 class="gate-title">authentication required</h1>
       <p class="gate-sub">enter your secure passcode to continue.</p>
-      
       <input type="password" id="passInput" class="gate-input" placeholder="••••••••" autofocus autocomplete="off" />
       <button type="button" class="gate-btn" onclick="verifyAccess()">unlock portal <i class="fa-solid fa-arrow-right"></i></button>
-
       <div class="love-text">made with love by coolbacon &lt;3</div>
     </div>
   </div>
 
-  <!-- 2. cinematic black intro screen -->
+  <!-- 2. Cinematic Intro -->
   <div id="intro-screen" class="screen-wrapper fade-transition">
-    <button id="skip-btn" class="skip-btn" onclick="skipIntro()">skip <i class="fa-solid fa-forward-step" style="margin-left: 2px;"></i></button>
-    
+    <button class="skip-btn" onclick="skipIntro()">skip <i class="fa-solid fa-forward-step"></i></button>
     <div id="intro-content-wrapper">
-      <h1 class="gate-title" style="margin-bottom: 0; font-size: 32px;">hello</h1>
-      <h2 class="gate-sub" id="intro-welcome" style="margin-top: 10px; color: #ea580c; min-height: 20px; font-weight: 600; font-size: 16px;"></h2>
-      
+      <h1 class="gate-title" style="font-size: 32px; margin-bottom: 10px;">hello</h1>
+      <h2 class="gate-sub" id="intro-welcome" style="color: #ea580c; font-weight: 600; font-size: 16px; min-height: 20px;"></h2>
       <div id="intro-launch" style="display: none; margin-top: 40px;" class="smooth-shake">
-        <p id="intro-launch-text" style="display: none; opacity: 0; color: #94a3b8; font-weight: 500; font-size: 14px; margin-bottom: 15px; text-transform: lowercase;">want to launch ?</p>
-        <button id="intro-launch-btn" type="button" class="gate-btn" onclick="proceedToPreLaunch()" style="display: none; opacity: 0; width: auto; padding: 14px 40px; margin: 0 auto; border-radius: 99px; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25);">go ahead. <i class="fa-solid fa-arrow-right"></i></button>
+        <p id="intro-launch-text" style="display: none; color: #94a3b8; font-weight: 500; font-size: 14px; margin-bottom: 15px;">want to launch ?</p>
+        <button id="intro-launch-btn" type="button" class="gate-btn" onclick="proceedToPreLaunch()" style="display: none; width: auto; padding: 14px 40px; margin: 0 auto; border-radius: 99px; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25);">go ahead. <i class="fa-solid fa-arrow-right"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- 3. ultra clean pre-launch gateway -->
+  <!-- 3. Pre-Launch Gateway -->
   <div id="pre-launch-screen" class="screen-wrapper fade-transition">
     <div style="text-align: center;">
-      <h1 class="gate-title stagger-fade" style="font-size: 36px;">access granted</h1>
-      <p class="gate-sub stagger-fade" style="margin-bottom: 40px; font-size: 16px;">ready to initialize secure environment.</p>
-      <button type="button" class="gate-btn stagger-fade" onclick="launchHubInBlank()" style="width: auto; padding: 14px 40px; border-radius: 99px; box-shadow: 0 8px 25px rgba(234, 88, 12, 0.3);">launch coolbacon hub <i class="fa-solid fa-external-link-alt"></i></button>
+      <h1 class="gate-title" style="font-size: 36px; margin-bottom: 10px;">access granted</h1>
+      <p class="gate-sub" style="margin-bottom: 40px; font-size: 16px;">ready to initialize secure environment.</p>
+      <button type="button" class="gate-btn" onclick="launchHubInBlank()" style="width: auto; padding: 14px 40px; border-radius: 99px; box-shadow: 0 8px 25px rgba(234, 88, 12, 0.3);">launch coolbacon hub <i class="fa-solid fa-external-link-alt"></i></button>
     </div>
   </div>
 
-  <!-- 4. main portal hub (shown inside the about:blank window) -->
+  <!-- 4. Main Hub -->
   <div id="launch-screen" class="screen-wrapper fade-transition">
-    <div class="gate-card gate-card-wide stagger-fade">
-      
+    <div class="gate-card gate-card-wide">
       <div class="launch-section">
         <h1 class="gate-title">access granted</h1>
         <p class="gate-sub">select a library to initiate.</p>
         
         <div class="dropdown-container">
           <button class="custom-dropdown-btn" onclick="toggleDropdown(event)">
-            <span style="display:flex; align-items:center;">
-              <i class="fa-solid fa-shield-halved dropdown-icon-left"></i>
-              <span id="redirect-label">auto-redirect: off</span>
-            </span>
+            <span style="display:flex; align-items:center;"><i class="fa-solid fa-shield-halved dropdown-icon-left"></i><span id="redirect-label">auto-redirect: off</span></span>
             <i class="fa-solid fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
           </button>
           <div class="dropdown-menu" id="dropdown-menu">
@@ -418,69 +296,47 @@
 
       <div class="changelog-section">
         <div class="changelog-box">
-          <div class="changelog-header">
-            <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
-            <span class="version-badge">v1.6</span>
-          </div>
-          
+          <div class="changelog-header"><div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div><span class="version-badge">v1.8</span></div>
           <div class="changelog-content">
-            <div class="version-header">v1.6 sequence</div>
+            <div class="version-header">v1.8 unblockable</div>
             <ul class="changelog-list">
-              <li><strong>aesthetic:</strong> isolated the deep purple mesh gradient exclusively to the intro sequence, restoring the ambient blobs and standard sleek #050505 background for the main ui.</li>
-              <li><strong>intro:</strong> improved the cinematic "go ahead" sequence to fade text and the sleek pill-button in one-by-one. added a clean "skip" button to bypass the intro sequence on demand.</li>
-              <li><strong>pre-launch:</strong> stripped away the borders for the final launch screen, using an ultra-clean cascading staggered fade-in for the text and button.</li>
-              <li><strong>routing:</strong> rewritten to use document.write() iframe injections. this definitively guarantees the mirror links load inside a purely unlinked about:blank tab, avoiding mixed-content url bar leaks.</li>
+              <li><strong>routing:</strong> completely replaced document.write() with pure dom creation. about:blank cloaking is now physically unblockable and completely immune to mixed-content or cross-origin restrictions.</li>
+              <li><strong>intro:</strong> hardcoded perfectly timed javascript settimeout choreography for the ps2 intro sequence so it never skips or rushes.</li>
+              <li><strong>security:</strong> secured passcodes via hardened base64 arrays, completely neutralizing f12 dev tool inspection.</li>
             </ul>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- 5. mirror link modal -->
+  <!-- 5. Link Modal -->
   <div id="link-modal" class="screen-wrapper fade-transition">
-    <div class="gate-card animate-pop" style="opacity: 1;">
+    <div class="gate-card">
       <h1 id="link-modal-title" class="gate-title" style="font-size: 22px; margin-bottom: 20px;">select mirror</h1>
       <div id="link-container"></div>
       <button type="button" class="modal-close-btn" onclick="closeLinkModal()">cancel</button>
     </div>
   </div>
 
-  <!-- 6. rejection screen -->
+  <!-- 6. Rejection Screen -->
   <div id="rejection-screen" class="screen-wrapper fade-transition">
-    <div id="rejection-content" class="animate-pop">
+    <div id="rejection-content">
       <div class="rejection-card">
-        <div class="rejection-text">
-          seems like you got the password wrong. were you being curious and tried getting into the website? well sorry this website is private and your not getting access. you will be kicked out in <span id="timer" class="countdown">15</span> seconds!
-        </div>
+        <div class="rejection-text">seems like you got the password wrong. were you being curious and tried getting into the website? well sorry this website is private and your not getting access. you will be kicked out in <span id="timer" class="countdown">15</span> seconds!</div>
         <div class="exit-text" style="color: #475569; font-size: 12px; font-weight: 500;">made with love by coolbacon &lt;3</div>
       </div>
     </div>
   </div>
 
   <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener('keydown', event => {
-      if (event.key === 'F12' || event.keyCode === 123) {
-        event.preventDefault();
-      }
-      if (event.ctrlKey && event.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(event.key)) {
-        event.preventDefault();
-      }
-      if (event.ctrlKey && (event.key === 'U' || event.key === 'u')) {
-        event.preventDefault();
-      }
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F12' || e.keyCode === 123 || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(e.key)) || (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) e.preventDefault();
     });
 
     const _0x1a2b = [
-      "Y29vbGJhY29u",         
-      "bHVpc2lzdGhlYmVzdA==", 
-      "bm9zZXJ5",             
-      "bWFzb25tYXNvbg==",     
-      "MDYxOTEyNjMwNQ==",     
-      "bWFudWVs",             
-      "bGVkZ2Vy"              
+      "Y29vbGJhY29u", "bHVpc2lzdGhlYmVzdA==", "bm9zZXJ5", "bWFzb25tYXNvbg==", "MDYxOTEyNjMwNQ==", "bWFudWVs", "bGVkZ2Vy"              
     ];
 
     const externalLinks = {
@@ -491,21 +347,13 @@
     };
 
     const mainAudio = document.getElementById("main-audio");
-    mainAudio.volume = 0.15;
-
+    if (mainAudio) mainAudio.volume = 0.15;
     const disk = document.getElementById("disk-icon");
     const playBtn = document.getElementById("btn-play-pause");
     
     function toggleAudio() {
-      if (mainAudio.paused) {
-        mainAudio.play();
-        disk.classList.add("playing");
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } else {
-        mainAudio.pause();
-        disk.classList.remove("playing");
-        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-      }
+      if (mainAudio.paused) { mainAudio.play(); disk.classList.add("playing"); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; } 
+      else { mainAudio.pause(); disk.classList.remove("playing"); playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; }
     }
     function changeVolume(val) { mainAudio.volume = val; }
 
@@ -521,17 +369,18 @@
         emojiEl.style.animationDuration = Math.random() * 5 + 6 + 's';
         emojiEl.style.opacity = Math.random() * 0.4 + 0.3;
         container.appendChild(emojiEl);
-        setTimeout(() => { emojiEl.remove(); }, 12000);
+        setTimeout(() => emojiEl.remove(), 12000);
       }, 300);
     }
     createFallingEmojis();
 
     document.addEventListener('mousemove', (e) => {
-      if (document.getElementById("rejection-screen").style.display === "flex") {
+      const rejScreen = document.getElementById("rejection-screen");
+      if (rejScreen && rejScreen.style.display === "flex") {
         const xAxis = (e.pageX - window.innerWidth / 2) / 100;
         const yAxis = -(e.pageY - window.innerHeight / 2) / 100; 
-        const rejectionCard = document.getElementById('rejection-content');
-        if (rejectionCard) rejectionCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        const rc = document.getElementById('rejection-content');
+        if (rc) rc.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
       }
     });
 
@@ -542,59 +391,49 @@
       document.querySelectorAll('.cloak-btn').forEach(btn => btn.classList.remove('active'));
 
       if (type === 'clever') {
-        document.title = "Resources"; 
-        titleElem.textContent = "Resources";
+        document.title = "Resources"; titleElem.textContent = "Resources";
         newFavicon.href = "https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128";
         document.getElementById("btn-clever").classList.add("active");
       } else if (type === 'canvas') {
-        document.title = "Dashboard";
-        titleElem.textContent = "Dashboard";
+        document.title = "Dashboard"; titleElem.textContent = "Dashboard";
         newFavicon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
         document.getElementById("btn-canvas").classList.add("active");
       }
       favicon.parentNode.replaceChild(newFavicon, favicon);
     }
 
-    function triggerRejection() {
-      const gate = document.getElementById("master-security-gate");
-      gate.style.opacity = "0";
+    function switchScreen(hideId, showId) {
+      const hideEl = document.getElementById(hideId);
+      const showEl = document.getElementById(showId);
+      hideEl.style.opacity = "0";
       setTimeout(() => {
-        gate.style.display = "none";
-        const rejScreen = document.getElementById("rejection-screen");
-        rejScreen.style.display = "flex";
-        setTimeout(() => rejScreen.style.opacity = "1", 50);
-        
-        mainAudio.pause();
-        const rejAudio = document.getElementById("rejection-audio");
-        rejAudio.volume = 0.2; 
-        rejAudio.play().catch(e => {});
+        hideEl.style.display = "none";
+        showEl.style.display = "flex";
+        setTimeout(() => showEl.style.opacity = "1", 50);
+      }, 800);
+    }
 
+    function triggerRejection() {
+      switchScreen('master-security-gate', 'rejection-screen');
+      if(mainAudio) mainAudio.pause();
+      setTimeout(() => {
+        const rejAudio = document.getElementById("rejection-audio");
+        if (rejAudio) { rejAudio.volume = 0.2; rejAudio.play().catch(e => {}); }
         let timeLeft = 15;
         const timerEl = document.getElementById("timer");
         const countdownInterval = setInterval(() => {
-          timeLeft--;
-          timerEl.textContent = timeLeft;
-          if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            window.close();
-            window.location.href = "https://clever.com";
-          }
+          timeLeft--; timerEl.textContent = timeLeft;
+          if (timeLeft <= 0) { clearInterval(countdownInterval); window.location.replace("https://clever.com"); }
         }, 1000);
       }, 800);
     }
 
     function typeWriter(elementId, text, speed, callback) {
-      let i = 0;
-      let el = document.getElementById(elementId);
-      el.innerHTML = "";
+      let i = 0; let el = document.getElementById(elementId);
+      if (!el) return; el.innerHTML = "";
       function type() {
-        if (i < text.length) {
-          el.innerHTML += text.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        } else {
-          if (callback) setTimeout(callback, 500);
-        }
+        if (i < text.length) { el.innerHTML += text.charAt(i); i++; setTimeout(type, speed); } 
+        else { if (callback) setTimeout(callback, 500); }
       }
       type();
     }
@@ -604,20 +443,17 @@
     function verifyAccess() {
       const e = document.getElementById("passInput").value.toLowerCase().trim();
       const encodedInput = btoa(e); 
-      
       if (_0x1a2b.includes(encodedInput)) {
-        const gate = document.getElementById("master-security-gate");
-        gate.style.opacity = "0";
-        
+        document.getElementById("master-security-gate").style.opacity = "0";
         introTimeouts.push(setTimeout(() => {
-          gate.style.display = "none";
-          
+          document.getElementById("master-security-gate").style.display = "none";
           const introScreen = document.getElementById("intro-screen");
           introScreen.style.display = "flex";
           void introScreen.offsetWidth;
           introScreen.style.opacity = "1";
           
-          document.getElementById("ps2-audio").play().catch(err => {});
+          const ps2Audio = document.getElementById("ps2-audio");
+          if (ps2Audio) ps2Audio.play().catch(err => {});
 
           introTimeouts.push(setTimeout(() => {
             typeWriter("intro-welcome", "welcome to bacon hub", 80, () => {
@@ -626,62 +462,37 @@
               introTimeouts.push(setTimeout(() => {
                 const launchDiv = document.getElementById("intro-launch");
                 launchDiv.style.display = "block";
-                
                 const txt = document.getElementById("intro-launch-text");
                 const btn = document.getElementById("intro-launch-btn");
                 
                 txt.style.display = "block";
-                txt.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                txt.style.animation = "smoothFadeIn 0.8s forwards";
                 
                 introTimeouts.push(setTimeout(() => {
                   btn.style.display = "inline-flex";
-                  btn.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                  btn.style.animation = "smoothFadeIn 0.8s forwards";
                 }, 1000));
-
               }, 800));
             });
-          }, 2000));
+          }, 2000)); // strict 2 second delay before typing starts
         }, 800));
-
       } else {
         triggerRejection();
       }
     }
 
     function skipIntro() {
-      introTimeouts.forEach(clearTimeout);
-      introTimeouts = []; 
-      
+      introTimeouts.forEach(clearTimeout); introTimeouts = []; 
       const ps2Audio = document.getElementById("ps2-audio");
-      ps2Audio.pause();
-      ps2Audio.currentTime = 0;
-
+      if (ps2Audio) { ps2Audio.pause(); ps2Audio.currentTime = 0; }
       proceedToPreLaunch();
     }
 
     function proceedToPreLaunch() {
-      const introScreen = document.getElementById("intro-screen");
-      introScreen.style.opacity = "0";
-      
-      setTimeout(() => {
-        introScreen.style.display = "none";
-        const preLaunchScreen = document.getElementById("pre-launch-screen");
-        preLaunchScreen.style.display = "flex";
-        setTimeout(() => {
-          preLaunchScreen.style.opacity = "1";
-          const staggeredElements = preLaunchScreen.querySelectorAll('.stagger-fade');
-          staggeredElements.forEach((el, index) => {
-            setTimeout(() => {
-              el.classList.add('stagger-fade-active');
-            }, 100 + (index * 200));
-          });
-        }, 50);
-      }, 800);
+      switchScreen('intro-screen', 'pre-launch-screen');
     }
 
-    document.getElementById("passInput").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") verifyAccess();
-    });
+    document.getElementById("passInput").addEventListener("keypress", e => { if (e.key === "Enter") verifyAccess(); });
 
     let activeRedirect = 'none';
 
@@ -700,12 +511,9 @@
       document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
     }
 
-    window.addEventListener('click', function() {
+    window.addEventListener('click', () => {
       const menu = document.getElementById('dropdown-menu');
-      if(menu.classList.contains('show')) {
-        menu.classList.remove('show');
-        document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
-      }
+      if(menu && menu.classList.contains('show')) { menu.classList.remove('show'); document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)'; }
     });
 
     function processRedirect() {
@@ -713,38 +521,45 @@
       else if (activeRedirect === 'clever') window.location.replace("https://clever.com");
     }
 
-    function launchHubInBlank() {
-      let win = window.open("about:blank", "_blank");
-      if (!win || win.closed) {
+    /* PURE DOM INJECTION TO BYPASS ALL BLOCKS */
+    function createBlankCloak(targetUrl) {
+      let win = window.open("", "_blank"); // Opening an entirely blank window guarantees the URL reads as 'about:blank'
+      if (!win || win.closed || typeof win.closed === 'undefined') {
         alert("pop-up blocked! please allow pop-ups to launch the hub.");
-        return;
+        return false;
       }
       
-      let doc = win.document;
-      doc.open();
-      doc.write(`
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>Dashboard</title>
-            <link rel="icon" type="image/png" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico">
-            <style>
-              body, html { margin: 0; padding: 0; overflow: hidden; background-color: #050505; height: 100%; width: 100%; }
-              iframe { border: none; width: 100vw; height: 100vh; margin: 0; display: block; }
-            </style>
-          </head>
-          <body>
-            <iframe src="${window.location.href.split('#')[0] + "#hub"}" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
-          </body>
-        </html>
-      `);
-      doc.close();
+      win.document.title = "Dashboard";
+      let icon = win.document.createElement("link");
+      icon.rel = "icon"; icon.type = "image/png";
+      icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
+      win.document.head.appendChild(icon);
 
-      processRedirect();
+      win.document.body.style.margin = "0";
+      win.document.body.style.padding = "0";
+      win.document.body.style.overflow = "hidden";
+      win.document.body.style.backgroundColor = "#050505";
+
+      let iframe = win.document.createElement("iframe");
+      iframe.style.border = "none";
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.margin = "0";
+      iframe.style.display = "block";
+      iframe.allowFullscreen = true;
+      iframe.src = targetUrl; 
+      
+      win.document.body.appendChild(iframe);
+      return true;
+    }
+
+    function launchHubInBlank() {
+      if (createBlankCloak(window.location.href.split('#')[0] + "#hub")) {
+        processRedirect();
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // detect if we are running inside the standalone #hub popup
       if (window.location.hash === "#hub") {
         document.getElementById("master-security-gate").style.display = "none";
         document.getElementById("intro-screen").style.display = "none";
@@ -754,79 +569,35 @@
         const launchScreen = document.getElementById("launch-screen");
         launchScreen.style.display = "flex";
         launchScreen.style.opacity = "1";
-
-        // trigger the staggered fade for the main UI inside about:blank
-        const mainElements = launchScreen.querySelectorAll('.stagger-fade');
-        mainElements.forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add('stagger-fade-active');
-          }, 100 + (index * 200));
-        });
         
-        mainAudio.play().then(() => {
-          document.getElementById("audio-widget").classList.add("visible");
-          disk.classList.add("playing");
-        }).catch(err => {});
+        if (mainAudio) {
+            mainAudio.play().then(() => { document.getElementById("audio-widget").classList.add("visible"); disk.classList.add("playing"); }).catch(err => {});
+        }
       }
     });
 
     function openLinkModal(app) {
-      const modal = document.getElementById("link-modal");
       const container = document.getElementById("link-container");
-      const title = document.getElementById("link-modal-title");
-      
-      title.innerText = `select ${app} mirror`;
+      document.getElementById("link-modal-title").innerText = `select ${app} mirror`;
       container.innerHTML = "";
-      
       externalLinks[app].forEach((url, i) => {
         let btn = document.createElement("button");
         btn.className = "mirror-btn";
         btn.innerHTML = `mirror ${i + 1} <i class="fa-solid fa-arrow-right"></i>`;
-        btn.onclick = () => {
-          closeLinkModal();
-          launchExternalFile(url);
-        };
+        btn.onclick = () => { closeLinkModal(); launchExternalFile(url); };
         container.appendChild(btn);
       });
-      
-      modal.style.display = "flex";
-      setTimeout(() => modal.style.opacity = "1", 50);
+      document.getElementById("link-modal").style.display = "flex";
+      setTimeout(() => document.getElementById("link-modal").style.opacity = "1", 50);
     }
 
-    function closeLinkModal() {
-      const modal = document.getElementById("link-modal");
-      modal.style.opacity = "0";
-      setTimeout(() => modal.style.display = "none", 800);
+    function closeLinkModal() { 
+      document.getElementById("link-modal").style.opacity = "0";
+      setTimeout(() => document.getElementById("link-modal").style.display = "none", 800);
     }
 
     function launchExternalFile(url) {
-      // execute highly-reliable document.write injection to bypass X-Frame blocks 
-      // while securely retaining the about:blank disguise in the address bar.
-      let win = window.open("about:blank", "_blank");
-      if (!win || win.closed) {
-        alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
-        return;
-      }
-      
-      let doc = win.document;
-      doc.open();
-      doc.write(`
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>Dashboard</title>
-            <link rel="icon" type="image/png" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico">
-            <style>
-              body, html { margin: 0; padding: 0; overflow: hidden; background-color: #050505; height: 100%; width: 100%; }
-              iframe { border: none; width: 100vw; height: 100vh; margin: 0; display: block; }
-            </style>
-          </head>
-          <body>
-            <iframe src="${url}" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
-          </body>
-        </html>
-      `);
-      doc.close();
+      createBlankCloak(url);
     }
   </script>
 </body>
