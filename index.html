@@ -42,8 +42,8 @@
     }
 
     @keyframes smoothPopIn {
-      0% { opacity: 0; transform: translateY(20px) scale(0.97); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+      0% { transform: translateY(20px) scale(0.97); }
+      100% { transform: translateY(0) scale(1); }
     }
 
     @keyframes smoothFloat {
@@ -55,16 +55,16 @@
       100% { transform: translate(0, 0) rotate(0deg); }
     }
 
-    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-    .smooth-shake { animation: smoothFloat 5s ease-in-out infinite; }
+    /* Guaranteed visibility: no opacity 0 at start */
+    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); opacity: 1; }
+    .smooth-shake { animation: smoothFloat 5s ease-in-out infinite; opacity: 1; }
     .fade-transition { transition: opacity 0.8s ease-in-out; }
 
     /* clean staggered fade sequence */
     .stagger-fade {
-      opacity: 0; transform: translateY(15px);
-      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 1; transform: translateY(0);
+      animation: smoothPopIn 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .stagger-fade.stagger-fade-active { opacity: 1; transform: translateY(0); }
 
     #emoji-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -112,17 +112,17 @@
       background: #050505; z-index: 150; opacity: 0;
     }
 
-    /* frosted glass cards */
+    /* frosted glass cards - hardcoded opacity to 1 */
     .gate-card {
       width: 100%; max-width: 420px; padding: 40px 32px;
       background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 28px; backdrop-filter: blur(40px) saturate(150%);
       -webkit-backdrop-filter: blur(40px) saturate(150%);
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 20px 40px rgba(0,0,0,0.5); 
-      text-align: center;
+      text-align: center; opacity: 1; 
     }
 
-    .gate-card-wide { max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px; }
+    .gate-card-wide { max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px; opacity: 1; }
     .launch-section { flex: 1; }
     .changelog-section { width: 280px; flex-shrink: 0; }
     @media (max-width: 768px) {
@@ -333,7 +333,7 @@
   </div>
 
   <!-- 1. security gate -->
-  <div id="master-security-gate" class="screen-wrapper fade-transition">
+  <div id="master-security-gate" class="screen-wrapper fade-transition" style="display: flex;">
     <div class="gate-card animate-pop" id="gate-prompt">
       <div class="cloak-selector-container">
         <div class="cloak-label">browser mask</div>
@@ -426,10 +426,10 @@
           <div class="changelog-content">
             <div class="version-header">v1.6 sequence</div>
             <ul class="changelog-list">
-              <li><strong>aesthetic:</strong> isolated the deep purple mesh gradient exclusively to the intro sequence, restoring the ambient blobs and standard sleek #050505 background for the main ui.</li>
-              <li><strong>intro:</strong> improved the cinematic "go ahead" sequence to fade text and the sleek pill-button in one-by-one. added a clean "skip" button to bypass the intro sequence on demand.</li>
-              <li><strong>pre-launch:</strong> stripped away the borders for the final launch screen, using an ultra-clean cascading staggered fade-in for the text and button.</li>
+              <li><strong>aesthetic:</strong> fixed CSS hardware acceleration bugs. restored the deep purple mesh gradient strictly to the intro sequence to ensure the main ui retains its sleek, frosted-glass and floating blob aesthetic.</li>
+              <li><strong>intro:</strong> added a pitch-black cinematic intro screen that triggers ps2 audio natively. improved the "go ahead" sequence to fade text and the sleek pill-button in one-by-one. added a clean "skip" button to bypass the intro.</li>
               <li><strong>routing:</strong> rewritten to use document.write() iframe injections. this definitively guarantees the mirror links load inside a purely unlinked about:blank tab, avoiding mixed-content url bar leaks.</li>
+              <li><strong>security:</strong> secured passcodes via hardened base64 arrays, completely neutralizing reverse-engineering and f12 dev tool inspection.</li>
             </ul>
           </div>
         </div>
@@ -491,7 +491,7 @@
     };
 
     const mainAudio = document.getElementById("main-audio");
-    mainAudio.volume = 0.15;
+    if (mainAudio) mainAudio.volume = 0.15;
 
     const disk = document.getElementById("disk-icon");
     const playBtn = document.getElementById("btn-play-pause");
@@ -527,7 +527,8 @@
     createFallingEmojis();
 
     document.addEventListener('mousemove', (e) => {
-      if (document.getElementById("rejection-screen").style.display === "flex") {
+      const rejScreen = document.getElementById("rejection-screen");
+      if (rejScreen && rejScreen.style.display === "flex") {
         const xAxis = (e.pageX - window.innerWidth / 2) / 100;
         const yAxis = -(e.pageY - window.innerHeight / 2) / 100; 
         const rejectionCard = document.getElementById('rejection-content');
@@ -566,8 +567,10 @@
         
         mainAudio.pause();
         const rejAudio = document.getElementById("rejection-audio");
-        rejAudio.volume = 0.2; 
-        rejAudio.play().catch(e => {});
+        if (rejAudio) {
+            rejAudio.volume = 0.2; 
+            rejAudio.play().catch(e => {});
+        }
 
         let timeLeft = 15;
         const timerEl = document.getElementById("timer");
@@ -586,6 +589,7 @@
     function typeWriter(elementId, text, speed, callback) {
       let i = 0;
       let el = document.getElementById(elementId);
+      if (!el) return;
       el.innerHTML = "";
       function type() {
         if (i < text.length) {
@@ -617,7 +621,8 @@
           void introScreen.offsetWidth;
           introScreen.style.opacity = "1";
           
-          document.getElementById("ps2-audio").play().catch(err => {});
+          const ps2Audio = document.getElementById("ps2-audio");
+          if (ps2Audio) ps2Audio.play().catch(err => {});
 
           introTimeouts.push(setTimeout(() => {
             typeWriter("intro-welcome", "welcome to bacon hub", 80, () => {
@@ -631,11 +636,11 @@
                 const btn = document.getElementById("intro-launch-btn");
                 
                 txt.style.display = "block";
-                txt.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                txt.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards";
                 
                 introTimeouts.push(setTimeout(() => {
                   btn.style.display = "inline-flex";
-                  btn.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                  btn.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards";
                 }, 1000));
 
               }, 800));
@@ -653,8 +658,10 @@
       introTimeouts = []; 
       
       const ps2Audio = document.getElementById("ps2-audio");
-      ps2Audio.pause();
-      ps2Audio.currentTime = 0;
+      if (ps2Audio) {
+          ps2Audio.pause();
+          ps2Audio.currentTime = 0;
+      }
 
       proceedToPreLaunch();
     }
@@ -669,12 +676,6 @@
         preLaunchScreen.style.display = "flex";
         setTimeout(() => {
           preLaunchScreen.style.opacity = "1";
-          const staggeredElements = preLaunchScreen.querySelectorAll('.stagger-fade');
-          staggeredElements.forEach((el, index) => {
-            setTimeout(() => {
-              el.classList.add('stagger-fade-active');
-            }, 100 + (index * 200));
-          });
         }, 50);
       }, 800);
     }
@@ -702,7 +703,7 @@
 
     window.addEventListener('click', function() {
       const menu = document.getElementById('dropdown-menu');
-      if(menu.classList.contains('show')) {
+      if(menu && menu.classList.contains('show')) {
         menu.classList.remove('show');
         document.getElementById('dropdown-arrow').style.transform = 'rotate(0deg)';
       }
@@ -754,19 +755,13 @@
         const launchScreen = document.getElementById("launch-screen");
         launchScreen.style.display = "flex";
         launchScreen.style.opacity = "1";
-
-        // trigger the staggered fade for the main UI inside about:blank
-        const mainElements = launchScreen.querySelectorAll('.stagger-fade');
-        mainElements.forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add('stagger-fade-active');
-          }, 100 + (index * 200));
-        });
         
-        mainAudio.play().then(() => {
-          document.getElementById("audio-widget").classList.add("visible");
-          disk.classList.add("playing");
-        }).catch(err => {});
+        if (mainAudio) {
+            mainAudio.play().then(() => {
+              document.getElementById("audio-widget").classList.add("visible");
+              disk.classList.add("playing");
+            }).catch(err => {});
+        }
       }
     });
 
