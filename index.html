@@ -15,8 +15,19 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
     
-    body { background-color: #050505; overflow: hidden; color: #f8fafc; }
+    body { 
+      background-color: #050505;
+      overflow: hidden; color: #f8fafc; 
+      -webkit-font-smoothing: antialiased;
+    }
 
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ambient background decor for main hub */
     .ambient-blob {
       position: absolute; filter: blur(90px); z-index: 0; opacity: 0.5;
       animation: float 20s infinite ease-in-out alternate;
@@ -35,7 +46,25 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes smoothFloat {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(2px, -1px) rotate(1deg); }
+      40% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-2px, -1px) rotate(1deg); }
+      80% { transform: translate(1px, 2px) rotate(-1deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .animate-pop { animation: smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .smooth-shake { animation: smoothFloat 5s ease-in-out infinite; }
+    .fade-transition { transition: opacity 0.8s ease-in-out; }
+
+    /* clean staggered fade sequence */
+    .stagger-fade {
+      opacity: 0; transform: translateY(15px);
+      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stagger-fade.stagger-fade-active { opacity: 1; transform: translateY(0); }
 
     #emoji-container {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -47,19 +76,50 @@
       100% { transform: translateY(105vh) translateX(40px) rotate(180deg); opacity: 0; }
     }
 
+    /* screen management */
     .screen-wrapper {
       position: fixed; inset: 0; z-index: 10;
       display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
     }
-    #launch-screen, #rejection-screen, #link-modal, #pre-launch-screen { display: none; }
+    #launch-screen, #rejection-screen, #link-modal, #pre-launch-screen, #intro-screen { display: none; }
 
+    /* custom cinematic intro screen with isolated purple gradient */
+    #intro-screen {
+      background: linear-gradient(-45deg, #050505, #160729, #050505, #0a0412);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      z-index: 200; opacity: 0;
+    }
+    #intro-content-wrapper {
+      text-align: center; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .move-up-active { transform: translateY(-30px); }
+
+    .skip-btn {
+      position: absolute; bottom: 30px; right: 40px;
+      background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05);
+      color: #94a3b8; padding: 8px 18px; border-radius: 99px;
+      font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+      text-transform: lowercase; backdrop-filter: blur(10px);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .skip-btn:hover {
+      background: rgba(255, 255, 255, 0.05); color: #f8fafc; border-color: rgba(255, 255, 255, 0.2); transform: scale(1.05);
+    }
+
+    /* pre-launch clean screen */
+    #pre-launch-screen {
+      background: #050505; z-index: 150; opacity: 0;
+    }
+
+    /* frosted glass cards */
     .gate-card {
       width: 100%; max-width: 420px; padding: 40px 32px;
-      background: rgba(15, 23, 42, 0.55); border: 1px solid rgba(249, 115, 22, 0.3);
+      background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 28px; backdrop-filter: blur(40px) saturate(150%);
       -webkit-backdrop-filter: blur(40px) saturate(150%);
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 20px 40px rgba(0,0,0,0.5); 
-      text-align: center; opacity: 0; 
+      text-align: center;
     }
 
     .gate-card-wide { max-width: 800px; display: flex; gap: 32px; text-align: left; padding: 32px; }
@@ -70,6 +130,7 @@
       .changelog-section { width: 100%; }
     }
 
+    /* browser mask selector */
     .cloak-selector-container { margin-bottom: 24px; }
     .cloak-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: lowercase; margin-bottom: 12px; font-weight: 700; text-align: center; }
     .cloak-btn-group { display: flex; gap: 8px; justify-content: center; }
@@ -83,12 +144,13 @@
     .cloak-btn:hover { background: rgba(255, 255, 255, 0.1); color: #f8fafc; transform: scale(1.02); }
     .cloak-btn.active { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.15); }
 
+    /* typography & inputs */
     .gate-title { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.5px; text-transform: lowercase; }
     .gate-sub { font-size: 14px; color: #94a3b8; margin-bottom: 24px; text-transform: lowercase; }
     
     .gate-input { 
       width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4); 
-      border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 16px; 
+      border: 1px solid rgba(249, 115, 22, 0.2); border-radius: 16px; 
       color: #ea580c; font-size: 16px; text-align: center; letter-spacing: 4px; 
       outline: none; transition: all 0.3s ease; margin-bottom: 20px; text-transform: lowercase;
     }
@@ -103,6 +165,13 @@
     }
     .gate-btn:hover { background: #c2410c; transform: scale(1.02); box-shadow: 0 15px 25px rgba(234, 88, 12, 0.3); }
 
+    .btn-minimal {
+      background: transparent; color: #ea580c; border: none; font-size: 15px; font-weight: 600; 
+      cursor: pointer; transition: all 0.3s ease; text-transform: lowercase; text-decoration: underline; text-underline-offset: 4px;
+    }
+    .btn-minimal:hover { color: #c2410c; }
+
+    /* dropdown & library ui */
     .dropdown-container { position: relative; margin-bottom: 24px; width: 100%; }
     .custom-dropdown-btn {
       width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
@@ -139,6 +208,7 @@
     .btn-launch { background: #ea580c; color: #ffffff; border: none; padding: 8px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-transform: lowercase; }
     .btn-launch:hover { background: #c2410c; transform: scale(1.04); box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
     
+    /* changelog */
     .changelog-box { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; height: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
     .changelog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .changelog-title { font-size: 15px; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; text-transform: lowercase; }
@@ -157,16 +227,38 @@
     .changelog-list li::before { content: ''; position: absolute; left: 0; top: 6px; width: 5px; height: 5px; background: #ea580c; border-radius: 50%; }
     .changelog-list li strong { color: #f8fafc; font-weight: 700; }
 
-    .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; text-transform: lowercase; }
+    .love-text { font-size: 12px; color: #475569; font-weight: 500; margin-top: auto; text-transform: lowercase; text-align: center; }
     .love-text-left { text-align: left; margin-top: 8px; cursor: pointer; transition: 0.2s; }
     .love-text-left:hover { color: #94a3b8; }
 
+    /* modal components */
+    #link-container { display: flex; flex-direction: column; width: 100%; max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
+    #link-container::-webkit-scrollbar { width: 4px; }
+    #link-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+    #link-container::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
+    .mirror-btn { 
+      width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); 
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; 
+      color: #94a3b8; font-size: 13px; font-weight: 600; 
+      cursor: pointer; transition: all 0.2s ease; margin-bottom: 8px; text-transform: lowercase;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .mirror-btn:hover { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; transform: translateX(2px); }
+    .modal-close-btn { 
+      width: 100%; padding: 14px; background: transparent; color: #94a3b8; 
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 14px; font-weight: 600; 
+      cursor: pointer; transition: all 0.2s ease; text-transform: lowercase;
+    }
+    .modal-close-btn:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
+
+    /* rejection screen */
     #rejection-screen { perspective: 1000px; }
     #rejection-content { transition: transform 0.1s linear; transform-style: preserve-3d; z-index: 10; }
     .rejection-card { width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 32px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(220, 38, 38, 0.5); border-radius: 28px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(220, 38, 38, 0.2); text-align: center; }
-    .rejection-text { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; text-transform: lowercase; }
+    .rejection-text { font-size: 24px; font-weight: 700; line-height: 1.4; color: #f8fafc; margin-bottom: 24px; text-transform: lowercase; }
     .countdown { color: #ef4444; font-weight: 800; font-size: 28px; text-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
 
+    /* audio widget / vinyl disk */
     .audio-widget {
       position: fixed; bottom: 24px; right: 24px; z-index: 100;
       display: flex; align-items: center; gap: 14px;
@@ -191,25 +283,12 @@
       position: relative;
     }
     .disk.playing { animation-play-state: running; }
-    .disk::before {
-      content: ''; position: absolute; width: 16px; height: 16px;
-      background: #ea580c; border-radius: 50%;
-    }
-    .disk::after {
-      content: ''; position: absolute; width: 4px; height: 4px;
-      background: #050505; border-radius: 50%;
-    }
+    .disk::before { content: ''; position: absolute; width: 16px; height: 16px; background: #ea580c; border-radius: 50%; }
+    .disk::after { content: ''; position: absolute; width: 4px; height: 4px; background: #050505; border-radius: 50%; }
 
-    .playlist-info {
-      display: flex; flex-direction: column; justify-content: center; margin-right: 4px;
-    }
-    .playlist-label {
-      font-size: 11px; font-weight: 800; color: #ea580c; letter-spacing: 0.5px;
-      text-transform: lowercase; line-height: 1; margin-bottom: 3px; font-family: 'Inter', sans-serif;
-    }
-    .playlist-sub {
-      font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: lowercase; letter-spacing: 0.5px; line-height: 1; font-family: 'Inter', sans-serif;
-    }
+    .playlist-info { display: flex; flex-direction: column; justify-content: center; margin-right: 4px; }
+    .playlist-label { font-size: 11px; font-weight: 800; color: #ea580c; letter-spacing: 0.5px; text-transform: lowercase; line-height: 1; margin-bottom: 3px; font-family: 'Inter', sans-serif;}
+    .playlist-sub { font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: lowercase; letter-spacing: 0.5px; line-height: 1; font-family: 'Inter', sans-serif;}
 
     .btn-play-pause { background: none; border: none; color: #f8fafc; font-size: 14px; cursor: pointer; transition: color 0.2s; padding: 4px; }
     .btn-play-pause:hover { color: #ea580c; }
@@ -225,37 +304,22 @@
     .vol-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
     @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    #link-container { display: flex; flex-direction: column; width: 100%; max-height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
-    #link-container::-webkit-scrollbar { width: 4px; }
-    #link-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
-    #link-container::-webkit-scrollbar-thumb { background: #ea580c; border-radius: 4px; }
-    .mirror-btn { 
-      width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.4); 
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; 
-      color: #94a3b8; font-size: 13px; font-weight: 600; 
-      cursor: pointer; transition: all 0.2s ease; margin-bottom: 8px; text-transform: lowercase;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .mirror-btn:hover { background: rgba(234, 88, 12, 0.15); color: #ea580c; border-color: #ea580c; transform: translateX(2px); }
-    .modal-close-btn { 
-      width: 100%; padding: 14px; background: transparent; color: #94a3b8; 
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 14px; font-weight: 600; 
-      cursor: pointer; transition: all 0.2s ease; text-transform: lowercase;
-    }
-    .modal-close-btn:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
   </style>
 </head>
 <body>
 
+  <!-- background music & sfx -->
   <audio id="main-audio" src="playlist-october.mp3" loop preload="auto"></audio>
+  <audio id="ps2-audio" src="PS2 startup.mp3" preload="auto"></audio>
   <audio id="rejection-audio" src="audio.mp3" preload="auto"></audio>
 
+  <!-- background decor (visible behind frosted glass screens) -->
   <div class="ambient-blob blob-1"></div>
   <div class="ambient-blob blob-2"></div>
   <div class="ambient-blob blob-3"></div>
   <div id="emoji-container"></div>
 
+  <!-- autumn playlist disk widget -->
   <div id="audio-widget" class="audio-widget">
     <div class="disk-container">
       <div id="disk-icon" class="disk"></div>
@@ -268,11 +332,13 @@
     <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.15" oninput="changeVolume(this.value)">
   </div>
 
-  <div id="master-security-gate" class="screen-wrapper">
+  <!-- 1. security gate -->
+  <div id="master-security-gate" class="screen-wrapper fade-transition">
     <div class="gate-card animate-pop" id="gate-prompt">
       <div class="cloak-selector-container">
         <div class="cloak-label">browser mask</div>
         <div class="cloak-btn-group">
+          <!-- actual title handles disguise perfectly -->
           <button type="button" class="cloak-btn active" id="btn-clever" onclick="setDisguise('clever')">
             <img src="https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128" alt="clever" /> clever
           </button>
@@ -292,17 +358,33 @@
     </div>
   </div>
 
-  <div id="pre-launch-screen" class="screen-wrapper">
-    <div class="gate-card animate-pop">
-      <h1 class="gate-title">access granted</h1>
-      <p class="gate-sub">ready to initialize secure environment.</p>
-      <button type="button" class="gate-btn" onclick="launchHubInBlank()">launch coolbacon hub in about:blank <i class="fa-solid fa-external-link-alt"></i></button>
-      <div class="love-text">made with love by coolbacon &lt;3</div>
+  <!-- 2. cinematic black intro screen -->
+  <div id="intro-screen" class="screen-wrapper fade-transition">
+    <button id="skip-btn" class="skip-btn" onclick="skipIntro()">skip <i class="fa-solid fa-forward-step" style="margin-left: 2px;"></i></button>
+    
+    <div id="intro-content-wrapper">
+      <h1 class="gate-title" style="margin-bottom: 0; font-size: 32px;">hello</h1>
+      <h2 class="gate-sub" id="intro-welcome" style="margin-top: 10px; color: #ea580c; min-height: 20px; font-weight: 600; font-size: 16px;"></h2>
+      
+      <div id="intro-launch" style="display: none; margin-top: 40px;" class="smooth-shake">
+        <p id="intro-launch-text" style="display: none; opacity: 0; color: #94a3b8; font-weight: 500; font-size: 14px; margin-bottom: 15px; text-transform: lowercase;">want to launch ?</p>
+        <button id="intro-launch-btn" type="button" class="gate-btn" onclick="proceedToPreLaunch()" style="display: none; opacity: 0; width: auto; padding: 14px 40px; margin: 0 auto; border-radius: 99px; box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25);">go ahead. <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
     </div>
   </div>
 
-  <div id="launch-screen" class="screen-wrapper">
-    <div class="gate-card gate-card-wide animate-pop">
+  <!-- 3. ultra clean pre-launch gateway -->
+  <div id="pre-launch-screen" class="screen-wrapper fade-transition">
+    <div style="text-align: center;">
+      <h1 class="gate-title stagger-fade" style="font-size: 36px;">access granted</h1>
+      <p class="gate-sub stagger-fade" style="margin-bottom: 40px; font-size: 16px;">ready to initialize secure environment.</p>
+      <button type="button" class="gate-btn stagger-fade" onclick="launchHubInBlank()" style="width: auto; padding: 14px 40px; border-radius: 99px; box-shadow: 0 8px 25px rgba(234, 88, 12, 0.3);">launch coolbacon hub <i class="fa-solid fa-external-link-alt"></i></button>
+    </div>
+  </div>
+
+  <!-- 4. main portal hub (shown inside the about:blank window) -->
+  <div id="launch-screen" class="screen-wrapper fade-transition">
+    <div class="gate-card gate-card-wide stagger-fade">
       
       <div class="launch-section">
         <h1 class="gate-title">access granted</h1>
@@ -338,35 +420,26 @@
         <div class="changelog-box">
           <div class="changelog-header">
             <div class="changelog-title"><i class="fa-solid fa-code-merge"></i> changelog</div>
-            <span class="version-badge">v1.5</span>
+            <span class="version-badge">v1.6</span>
           </div>
           
           <div class="changelog-content">
-            <div class="version-header">v1.5 patch</div>
+            <div class="version-header">v1.6 sequence</div>
             <ul class="changelog-list">
-              <li><strong>stealth:</strong> completely revamped the about:blank cloaking system. the hub now opens inside its own standalone secure window via a dedicated staging screen.</li>
-              <li><strong>routing:</strong> mirror links now securely load directly inside the cloaked iframe, preserving the tab disguise perfectly.</li>
-              <li><strong>security:</strong> switched from reversing logic to standard hardened base64 encryption to ensure flawless password authentication while remaining immune to f12 snooping.</li>
-            </ul>
-
-            <div class="version-header">v1.4 halloween</div>
-            <ul class="changelog-list">
-              <li><strong>clean:</strong> removed broken local files and integrated direct mirror options.</li>
-              <li><strong>theme:</strong> activated complete dark-mode halloween aesthetic.</li>
-              <li><strong>audio:</strong> added a fully custom interactive vinyl record player tuned to the autumn playlist.</li>
-              <li><strong>effects:</strong> added falling halloween emojis to the background.</li>
-              <li><strong>ui:</strong> updated frosted glass panels with glowing orange borders.</li>
-              <li><strong>security:</strong> disabled right-click and blocked all dev console keyboard shortcuts.</li>
+              <li><strong>aesthetic:</strong> isolated the deep purple mesh gradient exclusively to the intro sequence, restoring the ambient blobs and standard sleek #050505 background for the main ui.</li>
+              <li><strong>intro:</strong> improved the cinematic "go ahead" sequence to fade text and the sleek pill-button in one-by-one. added a clean "skip" button to bypass the intro sequence on demand.</li>
+              <li><strong>pre-launch:</strong> stripped away the borders for the final launch screen, using an ultra-clean cascading staggered fade-in for the text and button.</li>
+              <li><strong>routing:</strong> rewritten to use document.write() iframe injections. this definitively guarantees the mirror links load inside a purely unlinked about:blank tab, avoiding mixed-content url bar leaks.</li>
             </ul>
           </div>
-
         </div>
       </div>
 
     </div>
   </div>
 
-  <div id="link-modal" class="screen-wrapper">
+  <!-- 5. mirror link modal -->
+  <div id="link-modal" class="screen-wrapper fade-transition">
     <div class="gate-card animate-pop" style="opacity: 1;">
       <h1 id="link-modal-title" class="gate-title" style="font-size: 22px; margin-bottom: 20px;">select mirror</h1>
       <div id="link-container"></div>
@@ -374,7 +447,8 @@
     </div>
   </div>
 
-  <div id="rejection-screen" class="screen-wrapper">
+  <!-- 6. rejection screen -->
+  <div id="rejection-screen" class="screen-wrapper fade-transition">
     <div id="rejection-content" class="animate-pop">
       <div class="rejection-card">
         <div class="rejection-text">
@@ -411,8 +485,6 @@
 
     const externalLinks = {
       lazylist: [
-        "https://sites.google.com/view/novaworkonyourwebsite/thank-for-10k",
-        "https://sites.google.com/view/novaworkonyourwebsite/thank-for-10k",
         "http://lazylist-learning.s3-website.us-east-2.amazonaws.com/",
         "http://kahoot.learning.s3-website.us-east-2.amazonaws.com/"
       ]
@@ -470,7 +542,7 @@
       document.querySelectorAll('.cloak-btn').forEach(btn => btn.classList.remove('active'));
 
       if (type === 'clever') {
-        document.title = "Resources";
+        document.title = "Resources"; 
         titleElem.textContent = "Resources";
         newFavicon.href = "https://s2.googleusercontent.com/s2/favicons?domain=clever.com&sz=128";
         document.getElementById("btn-clever").classList.add("active");
@@ -484,42 +556,127 @@
     }
 
     function triggerRejection() {
-      document.getElementById("master-security-gate").style.display = "none";
-      document.getElementById("rejection-screen").style.display = "flex";
-      mainAudio.pause();
-      
-      const rejAudio = document.getElementById("rejection-audio");
-      rejAudio.volume = 0.2; 
-      rejAudio.play().catch(e => {});
+      const gate = document.getElementById("master-security-gate");
+      gate.style.opacity = "0";
+      setTimeout(() => {
+        gate.style.display = "none";
+        const rejScreen = document.getElementById("rejection-screen");
+        rejScreen.style.display = "flex";
+        setTimeout(() => rejScreen.style.opacity = "1", 50);
+        
+        mainAudio.pause();
+        const rejAudio = document.getElementById("rejection-audio");
+        rejAudio.volume = 0.2; 
+        rejAudio.play().catch(e => {});
 
-      let timeLeft = 15;
-      const timerEl = document.getElementById("timer");
-      const countdownInterval = setInterval(() => {
-        timeLeft--;
-        timerEl.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          window.close();
-          window.location.href = "https://clever.com";
-        }
-      }, 1000);
+        let timeLeft = 15;
+        const timerEl = document.getElementById("timer");
+        const countdownInterval = setInterval(() => {
+          timeLeft--;
+          timerEl.textContent = timeLeft;
+          if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            window.close();
+            window.location.href = "https://clever.com";
+          }
+        }, 1000);
+      }, 800);
     }
+
+    function typeWriter(elementId, text, speed, callback) {
+      let i = 0;
+      let el = document.getElementById(elementId);
+      el.innerHTML = "";
+      function type() {
+        if (i < text.length) {
+          el.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        } else {
+          if (callback) setTimeout(callback, 500);
+        }
+      }
+      type();
+    }
+
+    let introTimeouts = [];
 
     function verifyAccess() {
       const e = document.getElementById("passInput").value.toLowerCase().trim();
       const encodedInput = btoa(e); 
       
       if (_0x1a2b.includes(encodedInput)) {
-        document.getElementById("master-security-gate").style.display = "none";
-        document.getElementById("pre-launch-screen").style.display = "flex";
+        const gate = document.getElementById("master-security-gate");
+        gate.style.opacity = "0";
         
-        mainAudio.play().then(() => {
-          document.getElementById("audio-widget").classList.add("visible");
-          disk.classList.add("playing");
-        }).catch(err => {});
+        introTimeouts.push(setTimeout(() => {
+          gate.style.display = "none";
+          
+          const introScreen = document.getElementById("intro-screen");
+          introScreen.style.display = "flex";
+          void introScreen.offsetWidth;
+          introScreen.style.opacity = "1";
+          
+          document.getElementById("ps2-audio").play().catch(err => {});
+
+          introTimeouts.push(setTimeout(() => {
+            typeWriter("intro-welcome", "welcome to bacon hub", 80, () => {
+              document.getElementById("intro-content-wrapper").classList.add("move-up-active");
+              
+              introTimeouts.push(setTimeout(() => {
+                const launchDiv = document.getElementById("intro-launch");
+                launchDiv.style.display = "block";
+                
+                const txt = document.getElementById("intro-launch-text");
+                const btn = document.getElementById("intro-launch-btn");
+                
+                txt.style.display = "block";
+                txt.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                
+                introTimeouts.push(setTimeout(() => {
+                  btn.style.display = "inline-flex";
+                  btn.style.animation = "smoothPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+                }, 1000));
+
+              }, 800));
+            });
+          }, 2000));
+        }, 800));
+
       } else {
         triggerRejection();
       }
+    }
+
+    function skipIntro() {
+      introTimeouts.forEach(clearTimeout);
+      introTimeouts = []; 
+      
+      const ps2Audio = document.getElementById("ps2-audio");
+      ps2Audio.pause();
+      ps2Audio.currentTime = 0;
+
+      proceedToPreLaunch();
+    }
+
+    function proceedToPreLaunch() {
+      const introScreen = document.getElementById("intro-screen");
+      introScreen.style.opacity = "0";
+      
+      setTimeout(() => {
+        introScreen.style.display = "none";
+        const preLaunchScreen = document.getElementById("pre-launch-screen");
+        preLaunchScreen.style.display = "flex";
+        setTimeout(() => {
+          preLaunchScreen.style.opacity = "1";
+          const staggeredElements = preLaunchScreen.querySelectorAll('.stagger-fade');
+          staggeredElements.forEach((el, index) => {
+            setTimeout(() => {
+              el.classList.add('stagger-fade-active');
+            }, 100 + (index * 200));
+          });
+        }, 50);
+      }, 800);
     }
 
     document.getElementById("passInput").addEventListener("keypress", function (e) {
@@ -563,34 +720,48 @@
         return;
       }
       
-      win.document.title = "Dashboard";
-      let icon = win.document.createElement("link");
-      icon.rel = "icon"; icon.type = "image/png";
-      icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
-      win.document.head.appendChild(icon);
+      let doc = win.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Dashboard</title>
+            <link rel="icon" type="image/png" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico">
+            <style>
+              body, html { margin: 0; padding: 0; overflow: hidden; background-color: #050505; height: 100%; width: 100%; }
+              iframe { border: none; width: 100vw; height: 100vh; margin: 0; display: block; }
+            </style>
+          </head>
+          <body>
+            <iframe src="${window.location.href.split('#')[0] + "#hub"}" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
+          </body>
+        </html>
+      `);
+      doc.close();
 
-      win.document.body.style.margin = "0";
-      win.document.body.style.padding = "0";
-      win.document.body.style.overflow = "hidden";
-      win.document.body.style.backgroundColor = "#050505";
-
-      let iframe = win.document.createElement("iframe");
-      iframe.style.border = "none";
-      iframe.style.width = "100vw";
-      iframe.style.height = "100vh";
-      iframe.style.margin = "0";
-      iframe.src = window.location.href.split('#')[0] + "#hub"; 
-      
-      win.document.body.appendChild(iframe);
       processRedirect();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // detect if we are running inside the standalone #hub popup
       if (window.location.hash === "#hub") {
         document.getElementById("master-security-gate").style.display = "none";
+        document.getElementById("intro-screen").style.display = "none";
         document.getElementById("pre-launch-screen").style.display = "none";
         document.getElementById("rejection-screen").style.display = "none";
-        document.getElementById("launch-screen").style.display = "flex";
+        
+        const launchScreen = document.getElementById("launch-screen");
+        launchScreen.style.display = "flex";
+        launchScreen.style.opacity = "1";
+
+        // trigger the staggered fade for the main UI inside about:blank
+        const mainElements = launchScreen.querySelectorAll('.stagger-fade');
+        mainElements.forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add('stagger-fade-active');
+          }, 100 + (index * 200));
+        });
         
         mainAudio.play().then(() => {
           document.getElementById("audio-widget").classList.add("visible");
@@ -619,43 +790,43 @@
       });
       
       modal.style.display = "flex";
+      setTimeout(() => modal.style.opacity = "1", 50);
     }
 
     function closeLinkModal() {
-      document.getElementById("link-modal").style.display = "none";
+      const modal = document.getElementById("link-modal");
+      modal.style.opacity = "0";
+      setTimeout(() => modal.style.display = "none", 800);
     }
 
     function launchExternalFile(url) {
-      if (window.location.hash === "#hub") {
-        window.location.replace(url);
-      } else {
-        let win = window.open("about:blank", "_blank", "width=1280,height=720,top=100,left=100");
-        if (!win || win.closed) {
-          alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
-          return;
-        }
-        
-        win.document.title = "Dashboard";
-        let icon = win.document.createElement("link");
-        icon.rel = "icon"; icon.type = "image/png";
-        icon.href = "https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico";
-        win.document.head.appendChild(icon);
-
-        win.document.body.style.margin = "0";
-        win.document.body.style.padding = "0";
-        win.document.body.style.overflow = "hidden";
-        win.document.body.style.backgroundColor = "#050505";
-
-        let iframe = win.document.createElement("iframe");
-        iframe.style.border = "none";
-        iframe.style.width = "100vw";
-        iframe.style.height = "100vh";
-        iframe.style.margin = "0";
-        iframe.src = url; 
-        
-        win.document.body.appendChild(iframe);
-        processRedirect();
+      // execute highly-reliable document.write injection to bypass X-Frame blocks 
+      // while securely retaining the about:blank disguise in the address bar.
+      let win = window.open("about:blank", "_blank");
+      if (!win || win.closed) {
+        alert("pop-up blocked! please allow pop-ups for this site to use the launcher.");
+        return;
       }
+      
+      let doc = win.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Dashboard</title>
+            <link rel="icon" type="image/png" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico">
+            <style>
+              body, html { margin: 0; padding: 0; overflow: hidden; background-color: #050505; height: 100%; width: 100%; }
+              iframe { border: none; width: 100vw; height: 100vh; margin: 0; display: block; }
+            </style>
+          </head>
+          <body>
+            <iframe src="${url}" allowfullscreen="true" allow="autoplay; fullscreen"></iframe>
+          </body>
+        </html>
+      `);
+      doc.close();
     }
   </script>
 </body>
